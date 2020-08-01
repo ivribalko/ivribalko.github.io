@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:rybalko_dev/ui/constant.dart';
 
 class Scrolling extends GetxController {
   final top = true.obs;
@@ -18,5 +19,14 @@ class Scrolling extends GetxController {
   void _setTop() {
     top.value = scroll.position.pixels < 30;
     update();
+  }
+}
+
+extension ListExtensions on List<Widget> {
+  void addSpacing({double multiplier = 1.0}) {
+    var size = padding * multiplier;
+    for (var i = length - 1; i > 0; i--) {
+      insert(i, SizedBox(width: size, height: size));
+    }
   }
 }

@@ -11,28 +11,37 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBar,
       floatingActionButton: GetBuilder<Scrolling>(
         init: Scrolling(scroll),
         builder: (x) => _FAB(extended: x.top.value),
       ),
-      body: SingleChildScrollView(
-        controller: scroll,
-        child: Column(
-          children: List.generate(
-            30,
-            (index) => Text(dummyLarge),
+      body: Padding(
+        padding: EdgeInsets.all(padding),
+        child: SingleChildScrollView(
+          controller: scroll,
+          child: Column(
+            children: [
+              _Title(),
+            ],
           ),
         ),
       ),
     );
   }
+}
 
-  AppBar get _appBar {
-    return AppBar(
-      title: Text(
-        dummyShort,
-        style: Get.textTheme.headline1,
+class _Title extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 50,
+      child: Row(
+        children: [
+          Text('Ivan Rybalko'.toUpperCase()),
+          Text('Flutter designer and developer'.toUpperCase()),
+          Spacer(),
+          Text('Experienced Unity developer'.toUpperCase()),
+        ]..addSpacing(),
       ),
     );
   }
