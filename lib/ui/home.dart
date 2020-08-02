@@ -25,13 +25,19 @@ class Home extends StatelessWidget {
             pageSnapping: false,
             children: [
               ...adapted(
+                Flexible(child: _About()),
+                _Image(),
+                constraints,
+                prepend: _Header(),
+              ),
+              ...adapted(
                 _About(),
                 _Image(),
                 constraints,
               ),
               ...adapted(
                 _About(),
-                _Image(),
+                Flexible(child: _Image()),
                 constraints,
                 append: _Footer(),
               ),
@@ -50,39 +56,37 @@ class Home extends StatelessWidget {
     Widget one,
     Widget two,
     BoxConstraints constraints, {
+    Widget prepend,
     Widget append,
   }) {
     var narrow = constraints.isNarrow;
     if (narrow) {
       return [
-        one.withNextPage(narrow),
-        append != null
-            ? Column(children: [two, append])
-            : two.withNextPage(narrow)
+        prepend != null
+            ? Column(children: [prepend, one]).withNextPage()
+            : one.withNextPage(),
+        append != null ? Column(children: [two, append]) : two.withNextPage(),
       ];
     } else {
       final row = Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [one, two],
       );
+      final content = prepend != null ? Column(children: [prepend, row]) : row;
       return [
         append != null
-            ? Column(children: [Flexible(child: row), append])
-            : row.withNextPage(narrow)
+            ? Column(children: [Flexible(child: content), append])
+            : content.withNextPage()
       ];
     }
   }
 }
 
 class _Header extends StatelessWidget {
-  const _Header({
-    Key key,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: kPadding * 2,
+      height: kPadding * 4,
       child: Row(
         children: [
           Text('Ivan Rybalko'.toUpperCase()),
@@ -135,29 +139,21 @@ class _About extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Flexible(child: Text(kDummyShort)),
-          Flexible(child: Text(kDummyLarge + kDummyLarge)),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Flexible(child: Text(kDummyShort)),
+        Flexible(child: Text(kDummyLarge + kDummyLarge)),
+      ],
     );
   }
 }
 
 class _Image extends StatelessWidget {
-  const _Image({
-    Key key,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: Container(
-        color: Colors.yellow,
-      ),
+    return Container(
+      color: Colors.yellow,
     );
   }
 }
@@ -206,10 +202,10 @@ class _FAB extends StatelessWidget {
 }
 
 extension NextPageExtension on Widget {
-  Widget withNextPage(bool narrow) {
+  Widget withNextPage() {
     return Column(
       children: [
-        narrow ? this : Flexible(child: this),
+        Flexible(child: this),
         _NextPage(),
         padding,
       ]..addSpacing(),
@@ -218,8 +214,8 @@ extension NextPageExtension on Widget {
 }
 
 extension NextPageListExtension on List<Widget> {
-  Iterable<Widget> withNextPage(bool narrow) {
-    return map((e) => e.withNextPage(narrow));
+  Iterable<Widget> withNextPage() {
+    return map((e) => e.withNextPage());
   }
 }
 
