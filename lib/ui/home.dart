@@ -31,20 +31,26 @@ class Home extends StatelessWidget {
                     _About(),
                     _Image(),
                     constraints,
-                    before: padded(child: _Header()),
+                    before: _Header(),
+                  ),
+                  ..._adapted(
+                    _About(),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('change_locale'.tr),
+                        _Localization(),
+                      ],
+                    ),
+                    constraints,
+                    before: _Title(),
                   ),
                   ..._adapted(
                     _About(),
                     _Image(),
                     constraints,
-                    before: padded(child: _Title()),
-                  ),
-                  ..._adapted(
-                    _About(),
-                    _Image(),
-                    constraints,
-                    before: padded(child: _Title()),
-                    append: padded(child: _Footer()),
+                    before: _Title(),
+                    append: _Footer(),
                   ),
                 ],
               ),
@@ -68,32 +74,34 @@ class Home extends StatelessWidget {
       return [
         Column(
           children: [
-            if (before != null) before,
+            if (before != null) padded(child: before),
             Flexible(child: padded(child: one)),
           ]..addSpacing(),
         ),
         Column(
           children: [
             Flexible(child: padded(child: two)),
-            if (append != null) append,
+            if (append != null) padded(child: append),
           ]..addSpacing(),
         ),
       ];
     } else {
       return [
-        Column(children: [
-          if (before != null) before,
-          Flexible(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Flexible(child: padded(child: one)),
-                Flexible(child: padded(child: two)),
-              ]..addSpacing(),
+        Column(
+          children: [
+            if (before != null) padded(child: before),
+            Flexible(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Flexible(child: padded(child: one)),
+                  Flexible(child: padded(child: two)),
+                ]..addSpacing(),
+              ),
             ),
-          ),
-          if (append != null) append
-        ])
+            if (append != null) padded(child: append)
+          ]..addSpacing(),
+        )
       ];
     }
   }
@@ -104,10 +112,10 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text('Ivan Rybalko'.toUpperCase()),
-        Text('Flutter developer'.toUpperCase()),
+        Text('ivan_rybalko'.tr.toUpperCase()),
+        Text('flutter_developer'.tr.toUpperCase()),
         Spacer(),
-        Text('Experienced Unity developer'.toUpperCase()),
+        Text('unity_developer'.tr.toUpperCase()),
       ]..addSpacing(),
     );
   }
@@ -117,7 +125,7 @@ class _Title extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      kDummyShort.toUpperCase(),
+      'kDummyShort'.tr.toUpperCase(),
       textAlign: TextAlign.center,
       style: Get.textTheme.headline2,
     );
@@ -129,7 +137,7 @@ class _Footer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text('© Ivan Rybalko, 2020'),
+        Text('© ${'ivan_rybalko'.tr}, 2020'),
         Spacer(),
         IconButton(
           icon: Icon(MdiIcons.linkedin),
@@ -145,7 +153,7 @@ class _Footer extends StatelessWidget {
           onPressed: () => launch('https://github.com/whitepyjamas'),
         ),
         Spacer(),
-        OutlineButton(
+        MaterialButton(
           onPressed: _showBottomSheet,
           child: Text('ivan@rybalko.dev'),
         ),
@@ -164,9 +172,9 @@ class _About extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Flexible(child: Text(kDummyShort)),
-        Flexible(child: Text(kDummyLarge + kDummyLarge)),
-      ],
+        Flexible(child: Text('kDummyShort'.tr)),
+        Flexible(child: Text('kDummyLarge'.tr * 2)),
+      ]..addSpacing(),
     );
   }
 }
@@ -224,7 +232,7 @@ class _FAB extends StatelessWidget {
       if (scrolling.isHeader.value) {
         return FloatingActionButton.extended(
           onPressed: _showBottomSheet,
-          label: Text('Contact'),
+          label: Text('email_me'.tr),
           icon: Icon(Icons.email),
         );
       } else {
@@ -234,6 +242,41 @@ class _FAB extends StatelessWidget {
         );
       }
     });
+  }
+}
+
+class _Localization extends StatelessWidget {
+  final supported = {
+    'EN': Locale('en', 'US'),
+    'RU': Locale('ru', 'RU'),
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [...supported.map(_toWidget).values],
+    );
+  }
+
+  MapEntry<String, MaterialButton> _toWidget(key, value) {
+    final current = Get.locale;
+    return MapEntry(
+      key,
+      MaterialButton(
+        child: Text(
+          key,
+          style: TextStyle(
+            color: current == value
+                ? Get.theme.accentColor
+                : Get.theme.disabledColor,
+          ),
+        ),
+        onPressed: () => Get.updateLocale(
+          value,
+        ),
+      ),
+    );
   }
 }
 
