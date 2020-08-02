@@ -33,7 +33,7 @@ class Home extends StatelessWidget {
                 _About(),
                 _Image(),
                 constraints,
-                isLast: true,
+                append: _Footer(),
               ),
             ],
           );
@@ -50,13 +50,15 @@ class Home extends StatelessWidget {
     Widget one,
     Widget two,
     BoxConstraints constraints, {
-    bool isLast = false,
+    Widget append,
   }) {
     var narrow = constraints.isNarrow;
     if (narrow) {
       return [
         one.withNextPage(narrow),
-        isLast ? Column(children: [two, _Footer()]) : two.withNextPage(narrow)
+        append != null
+            ? Column(children: [two, append])
+            : two.withNextPage(narrow)
       ];
     } else {
       final row = Row(
@@ -64,8 +66,8 @@ class Home extends StatelessWidget {
         children: [one, two],
       );
       return [
-        isLast
-            ? Column(children: [Flexible(child: row), _Footer()])
+        append != null
+            ? Column(children: [Flexible(child: row), append])
             : row.withNextPage(narrow)
       ];
     }
