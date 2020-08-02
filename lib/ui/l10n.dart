@@ -4,6 +4,10 @@ const Map<String, Map<String, String>> translationsKeys = {
 };
 
 const Map<String, String> translationsKeysEn = {
+  'email_me': 'Contact',
+  'ivan_rybalko': 'Ivan Rybalko',
+  'flutter_developer': 'Flutter developer',
+  'unity_developer': 'Experienced Unity developer',
   'change_locale':
       'Changing language is as easy as clicking this button. Try it now.',
   'kDummyShort': 'Lorem ipsum dolor',
@@ -12,6 +16,10 @@ const Map<String, String> translationsKeysEn = {
 };
 
 const Map<String, String> translationsKeysRu = {
+  'email_me': 'Связаться',
+  'ivan_rybalko': 'Иван Рыбалко',
+  'flutter_developer': 'Flutter-разработчик',
+  'unity_developer': 'Опытный Unity-разработчик',
   'change_locale':
       'Сменить язык так же просто, как нажать на кнопку. Попробуйте.',
   'kDummyShort': 'Лорем ипсум долор',

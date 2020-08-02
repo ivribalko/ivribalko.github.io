@@ -112,10 +112,10 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text('Ivan Rybalko'.toUpperCase()),
-        Text('Flutter developer'.toUpperCase()),
+        Text('ivan_rybalko'.tr.toUpperCase()),
+        Text('flutter_developer'.tr.toUpperCase()),
         Spacer(),
-        Text('Experienced Unity developer'.toUpperCase()),
+        Text('unity_developer'.tr.toUpperCase()),
       ]..addSpacing(),
     );
   }
@@ -137,7 +137,7 @@ class _Footer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text('© Ivan Rybalko, 2020'),
+        Text('© ${'ivan_rybalko'.tr}, 2020'),
         Spacer(),
         IconButton(
           icon: Icon(MdiIcons.linkedin),
@@ -232,7 +232,7 @@ class _FAB extends StatelessWidget {
       if (scrolling.isHeader.value) {
         return FloatingActionButton.extended(
           onPressed: _showBottomSheet,
-          label: Text('Contact'),
+          label: Text('email_me'.tr),
           icon: Icon(Icons.email),
         );
       } else {
