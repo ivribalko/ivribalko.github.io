@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:typicons_flutter/typicons_flutter.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'common.dart';
@@ -109,16 +109,16 @@ class _Footer extends StatelessWidget {
           Text('© Ivan Rybalko, 2020'),
           Spacer(),
           IconButton(
-            icon: Icon(Typicons.social_linkedin),
+            icon: Icon(MdiIcons.linkedin),
             onPressed: () =>
                 launch('https://www.linkedin.com/in/ivan-rybalko-38b92a151/'),
           ),
           IconButton(
-            icon: Icon(Typicons.social_instagram),
-            onPressed: () => launch('https://www.instagram.com/ivribalko/'),
+            icon: Icon(MdiIcons.telegram),
+            onPressed: () => launch('https://t.me/whitepyjamas'),
           ),
           IconButton(
-            icon: Icon(Typicons.social_github),
+            icon: Icon(MdiIcons.github),
             onPressed: () => launch('https://github.com/whitepyjamas'),
           ),
           Spacer(),
