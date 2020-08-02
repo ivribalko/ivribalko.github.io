@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:rybalko_dev/ui/constant.dart';
+import 'package:typicons_flutter/typicons_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'common.dart';
+import 'constant.dart';
 import 'mail.dart';
 
 class Home extends StatelessWidget {
@@ -13,24 +15,25 @@ class Home extends StatelessWidget {
     return Scaffold(
       floatingActionButton: GetBuilder<Scrolling>(
         init: Scrolling(scroll),
-        builder: (x) => _FAB(extended: x.isTop.value),
+        builder: _buildFAB,
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
-          final narrow = constraints.maxWidth < 800;
           return PageView(
             scrollDirection: Axis.vertical,
             controller: scroll,
+            pageSnapping: false,
             children: [
               ...adapted(
                 _About(),
                 _Image(),
-                narrow,
+                constraints,
               ),
               ...adapted(
                 _About(),
                 _Image(),
-                narrow,
+                constraints,
+                isLast: true,
               ),
             ],
           );
@@ -39,38 +42,84 @@ class Home extends StatelessWidget {
     );
   }
 
-  List<Widget> adapted(Widget one, Widget two, bool narrow) {
+  Widget _buildFAB(Scrolling x) {
+    return x.isFooter.value ? SizedBox() : _FAB(extended: x.isHeader.value);
+  }
+
+  List<Widget> adapted(
+    Widget one,
+    Widget two,
+    BoxConstraints constraints, {
+    bool isLast = false,
+  }) {
+    var narrow = constraints.isNarrow;
     if (narrow) {
       return [
         one.withNextPage(narrow),
-        two.withNextPage(narrow),
+        isLast ? Column(children: [two, _Footer()]) : two.withNextPage(narrow)
       ];
     } else {
+      final row = Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [one, two],
+      );
       return [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [one, two],
-        ).withNextPage(narrow),
+        isLast
+            ? Column(children: [Flexible(child: row), _Footer()])
+            : row.withNextPage(narrow)
       ];
     }
   }
 }
 
-class _Title extends StatelessWidget {
-  const _Title({
+class _Header extends StatelessWidget {
+  const _Header({
     Key key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: padding * 2,
+      height: kPadding * 2,
       child: Row(
         children: [
           Text('Ivan Rybalko'.toUpperCase()),
           Text('Flutter designer and developer'.toUpperCase()),
           Spacer(),
           Text('Experienced Unity developer'.toUpperCase()),
+        ]..addSpacing(),
+      ),
+    );
+  }
+}
+
+class _Footer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: kPadding * 4,
+      child: Row(
+        children: [
+          Text('© Ivan Rybalko, 2020'),
+          Spacer(),
+          IconButton(
+            icon: Icon(Typicons.social_linkedin),
+            onPressed: () =>
+                launch('https://www.linkedin.com/in/ivan-rybalko-38b92a151/'),
+          ),
+          IconButton(
+            icon: Icon(Typicons.social_instagram),
+            onPressed: () => launch('https://www.instagram.com/ivribalko/'),
+          ),
+          IconButton(
+            icon: Icon(Typicons.social_github),
+            onPressed: () => launch('https://github.com/whitepyjamas'),
+          ),
+          Spacer(),
+          OutlineButton(
+            onPressed: _showBottomSheet,
+            child: Text('ivan@rybalko.dev'),
+          ),
         ]..addSpacing(),
       ),
     );
@@ -86,11 +135,10 @@ class _About extends StatelessWidget {
   Widget build(BuildContext context) {
     return Flexible(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Spacer(),
-          Flexible(child: Text(dummyShort)),
-          Flexible(child: Text(dummyLarge)),
-          Spacer(),
+          Flexible(child: Text(kDummyShort)),
+          Flexible(child: Text(kDummyLarge + kDummyLarge)),
         ],
       ),
     );
@@ -118,12 +166,12 @@ class _NextPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: padding * 2,
+      height: kPadding * 2,
       child: IconButton(
         icon: Icon(Icons.arrow_downward),
         onPressed: () => scroll.animateToPage(
           scroll.page.toInt() + 1,
-          duration: duration,
+          duration: kDuration,
           curve: Curves.easeOutQuad,
         ),
       ),
@@ -153,17 +201,6 @@ class _FAB extends StatelessWidget {
       );
     }
   }
-
-  Future _showBottomSheet() {
-    return Get.bottomSheet(
-      Mail(),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(20),
-        ),
-      ),
-    );
-  }
 }
 
 extension NextPageExtension on Widget {
@@ -172,7 +209,25 @@ extension NextPageExtension on Widget {
       children: [
         narrow ? this : Flexible(child: this),
         _NextPage(),
-      ],
+        padding,
+      ]..addSpacing(),
     );
   }
+}
+
+extension NextPageListExtension on List<Widget> {
+  Iterable<Widget> withNextPage(bool narrow) {
+    return map((e) => e.withNextPage(narrow));
+  }
+}
+
+Future _showBottomSheet() {
+  return Get.bottomSheet(
+    Mail(),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(
+        Radius.circular(20),
+      ),
+    ),
+  );
 }

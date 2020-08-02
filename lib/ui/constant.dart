@@ -1,5 +1,8 @@
-const String dummyShort = 'Lorem ipsum dolor';
-const String dummyLarge =
+const String kDummyShort = 'Lorem ipsum dolor';
+
+const String kDummyLarge =
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
-const double padding = 20;
-const Duration duration = Duration(milliseconds: 300);
+
+const double kPadding = 15;
+
+const Duration kDuration = Duration(milliseconds: 400);

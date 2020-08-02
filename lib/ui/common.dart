@@ -3,30 +3,39 @@ import 'package:get/get.dart';
 import 'package:rybalko_dev/ui/constant.dart';
 
 class Scrolling extends GetxController {
-  final isTop = true.obs;
+  final isHeader = true.obs;
+  final isFooter = false.obs;
   final ScrollController scroll;
 
   Scrolling(this.scroll) {
-    scroll.addListener(_setTop);
+    scroll.addListener(_update);
   }
 
   @override
   void onClose() {
-    scroll.removeListener(_setTop);
+    scroll.removeListener(_update);
     super.onClose();
   }
 
-  void _setTop() {
-    isTop.value = scroll.position.pixels < 30;
+  void _update() {
+    const diff = 30.0;
+    isHeader.value = scroll.offset < diff;
+    isFooter.value = scroll.position.maxScrollExtent - scroll.offset < diff;
     update();
   }
 }
 
 extension ListExtensions on List<Widget> {
   void addSpacing({double multiplier = 1.0}) {
-    var size = padding * multiplier;
+    var size = kPadding * multiplier;
     for (var i = length - 1; i > 0; i--) {
       insert(i, SizedBox(width: size, height: size));
     }
   }
 }
+
+extension ConstraintsExtension on BoxConstraints {
+  bool get isNarrow => maxWidth < 800;
+}
+
+Widget get padding => const SizedBox(width: kPadding, height: kPadding);
