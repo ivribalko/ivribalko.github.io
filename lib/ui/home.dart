@@ -27,20 +27,20 @@ class Home extends StatelessWidget {
                 controller: scroll,
                 pageSnapping: false,
                 children: [
-                  ...adapted(
-                    Flexible(child: _About()),
+                  ..._adapted(
+                    _About(),
                     _Image(),
                     constraints,
-                    prepend: _Header(),
+                    before: _Header(),
                   ),
-                  ...adapted(
+                  ..._adapted(
                     _About(),
                     _Image(),
                     constraints,
                   ),
-                  ...adapted(
+                  ..._adapted(
                     _About(),
-                    Flexible(child: _Image()),
+                    _Image(),
                     constraints,
                     append: _Footer(),
                   ),
@@ -54,29 +54,31 @@ class Home extends StatelessWidget {
     );
   }
 
-  List<Widget> adapted(
+  List<Widget> _adapted(
     Widget one,
     Widget two,
     BoxConstraints constraints, {
-    Widget prepend,
+    Widget before,
     Widget append,
   }) {
     var narrow = constraints.isNarrow;
     if (narrow) {
       return [
-        prepend != null ? Column(children: [prepend, one]) : one,
-        append != null ? Column(children: [two, append]) : two,
+        Column(children: [if (before != null) before, Flexible(child: one)]),
+        Column(children: [Flexible(child: two), if (append != null) append]),
       ];
     } else {
-      final row = Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [one, two],
-      );
-      final content = prepend != null ? Column(children: [prepend, row]) : row;
       return [
-        append != null
-            ? Column(children: [Flexible(child: content), append])
-            : content
+        Column(children: [
+          if (before != null) before,
+          Flexible(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [Flexible(child: one), Flexible(child: two)],
+            ),
+          ),
+          if (append != null) append
+        ])
       ];
     }
   }
