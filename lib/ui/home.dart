@@ -31,20 +31,20 @@ class Home extends StatelessWidget {
                     _About(),
                     _Image(),
                     constraints,
-                    before: padded(child: _Header()),
+                    before: _Header(),
                   ),
                   ..._adapted(
                     _About(),
                     _Image(),
                     constraints,
-                    before: padded(child: _Title()),
+                    before: _Title(),
                   ),
                   ..._adapted(
                     _About(),
                     _Image(),
                     constraints,
-                    before: padded(child: _Title()),
-                    append: padded(child: _Footer()),
+                    before: _Title(),
+                    append: _Footer(),
                   ),
                 ],
               ),
@@ -68,21 +68,21 @@ class Home extends StatelessWidget {
       return [
         Column(
           children: [
-            if (before != null) before,
+            if (before != null) padded(child: before),
             Flexible(child: padded(child: one)),
           ]..addSpacing(),
         ),
         Column(
           children: [
             Flexible(child: padded(child: two)),
-            if (append != null) append,
+            if (append != null) padded(child: append),
           ]..addSpacing(),
         ),
       ];
     } else {
       return [
         Column(children: [
-          if (before != null) before,
+          if (before != null) padded(child: before),
           Flexible(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -92,7 +92,7 @@ class Home extends StatelessWidget {
               ]..addSpacing(),
             ),
           ),
-          if (append != null) append
+          if (append != null) padded(child: append)
         ])
       ];
     }
