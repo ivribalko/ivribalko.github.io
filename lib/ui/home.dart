@@ -81,19 +81,21 @@ class Home extends StatelessWidget {
       ];
     } else {
       return [
-        Column(children: [
-          if (before != null) padded(child: before),
-          Flexible(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Flexible(child: padded(child: one)),
-                Flexible(child: padded(child: two)),
-              ]..addSpacing(),
+        Column(
+          children: [
+            if (before != null) padded(child: before),
+            Flexible(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Flexible(child: padded(child: one)),
+                  Flexible(child: padded(child: two)),
+                ]..addSpacing(),
+              ),
             ),
-          ),
-          if (append != null) padded(child: append)
-        ])
+            if (append != null) padded(child: append)
+          ]..addSpacing(),
+        )
       ];
     }
   }
@@ -166,7 +168,7 @@ class _About extends StatelessWidget {
       children: [
         Flexible(child: Text(kDummyShort)),
         Flexible(child: Text(kDummyLarge + kDummyLarge)),
-      ],
+      ]..addSpacing(),
     );
   }
 }
