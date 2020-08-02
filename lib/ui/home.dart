@@ -10,46 +10,48 @@ import 'mail.dart';
 class Home extends StatelessWidget {
   final scroll = Get.put(PageController());
 
+  Home() {
+    Get.put(Scrolling(scroll));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: GetBuilder<Scrolling>(
-        init: Scrolling(scroll),
-        builder: _buildFAB,
-      ),
+      floatingActionButton: _FAB(),
       body: LayoutBuilder(
         builder: (context, constraints) {
-          return PageView(
-            scrollDirection: Axis.vertical,
-            controller: scroll,
-            pageSnapping: false,
+          return Stack(
             children: [
-              ...adapted(
-                Flexible(child: _About()),
-                _Image(),
-                constraints,
-                prepend: _Header(),
+              PageView(
+                scrollDirection: Axis.vertical,
+                controller: scroll,
+                pageSnapping: false,
+                children: [
+                  ...adapted(
+                    Flexible(child: _About()),
+                    _Image(),
+                    constraints,
+                    prepend: _Header(),
+                  ),
+                  ...adapted(
+                    _About(),
+                    _Image(),
+                    constraints,
+                  ),
+                  ...adapted(
+                    _About(),
+                    Flexible(child: _Image()),
+                    constraints,
+                    append: _Footer(),
+                  ),
+                ],
               ),
-              ...adapted(
-                _About(),
-                _Image(),
-                constraints,
-              ),
-              ...adapted(
-                _About(),
-                Flexible(child: _Image()),
-                constraints,
-                append: _Footer(),
-              ),
+              _NextPage(),
             ],
           );
         },
       ),
     );
-  }
-
-  Widget _buildFAB(Scrolling x) {
-    return x.isFooter.value ? SizedBox() : _FAB(extended: x.isHeader.value);
   }
 
   List<Widget> adapted(
@@ -62,10 +64,8 @@ class Home extends StatelessWidget {
     var narrow = constraints.isNarrow;
     if (narrow) {
       return [
-        prepend != null
-            ? Column(children: [prepend, one]).withNextPage()
-            : one.withNextPage(),
-        append != null ? Column(children: [two, append]) : two.withNextPage(),
+        prepend != null ? Column(children: [prepend, one]) : one,
+        append != null ? Column(children: [two, append]) : two,
       ];
     } else {
       final row = Row(
@@ -76,7 +76,7 @@ class Home extends StatelessWidget {
       return [
         append != null
             ? Column(children: [Flexible(child: content), append])
-            : content.withNextPage()
+            : content
       ];
     }
   }
@@ -160,62 +160,59 @@ class _Image extends StatelessWidget {
 
 class _NextPage extends StatelessWidget {
   final scroll = Get.find<PageController>();
+  final scrolling = Get.find<Scrolling>();
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: kPadding * 2,
-      child: IconButton(
-        icon: Icon(Icons.arrow_downward),
-        onPressed: () => scroll.animateToPage(
-          scroll.page.toInt() + 1,
-          duration: kDuration,
-          curve: Curves.easeOutQuad,
-        ),
-      ),
+    return Obx(
+      () {
+        if (scrolling.isFooter.value) {
+          return SizedBox();
+        }
+        return Padding(
+          padding: const EdgeInsets.all(kPadding * 2),
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: SizedBox(
+              height: kPadding * 2,
+              child: IconButton(
+                icon: Icon(Icons.arrow_downward),
+                onPressed: () => scroll.animateToPage(
+                  scroll.page.toInt() + 1,
+                  duration: kDuration,
+                  curve: Curves.easeOutQuad,
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
 
 class _FAB extends StatelessWidget {
-  final bool extended;
-  const _FAB({
-    Key key,
-    this.extended,
-  }) : super(key: key);
+  final scrolling = Get.find<Scrolling>();
 
   @override
   Widget build(BuildContext context) {
-    if (extended) {
-      return FloatingActionButton.extended(
-        onPressed: _showBottomSheet,
-        label: Text('Contact'),
-        icon: Icon(Icons.email),
-      );
-    } else {
-      return FloatingActionButton(
-        onPressed: _showBottomSheet,
-        child: Icon(Icons.email),
-      );
-    }
-  }
-}
-
-extension NextPageExtension on Widget {
-  Widget withNextPage() {
-    return Column(
-      children: [
-        Flexible(child: this),
-        _NextPage(),
-        padding,
-      ]..addSpacing(),
-    );
-  }
-}
-
-extension NextPageListExtension on List<Widget> {
-  Iterable<Widget> withNextPage() {
-    return map((e) => e.withNextPage());
+    return Obx(() {
+      if (scrolling.isFooter.value) {
+        return SizedBox();
+      }
+      if (scrolling.isHeader.value) {
+        return FloatingActionButton.extended(
+          onPressed: _showBottomSheet,
+          label: Text('Contact'),
+          icon: Icon(Icons.email),
+        );
+      } else {
+        return FloatingActionButton(
+          onPressed: _showBottomSheet,
+          child: Icon(Icons.email),
+        );
+      }
+    });
   }
 }
 
