@@ -37,11 +37,13 @@ class Home extends StatelessWidget {
                     _About(),
                     _Image(),
                     constraints,
+                    before: _Title(),
                   ),
                   ..._adapted(
                     _About(),
                     _Image(),
                     constraints,
+                    before: _Title(),
                     append: _Footer(),
                   ),
                 ],
@@ -97,6 +99,17 @@ class _Header extends StatelessWidget {
           Text('Experienced Unity developer'.toUpperCase()),
         ]..addSpacing(),
       ),
+    );
+  }
+}
+
+class _Title extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      kDummyShort.toUpperCase(),
+      textAlign: TextAlign.center,
+      style: Get.textTheme.headline2,
     );
   }
 }
