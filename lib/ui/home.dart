@@ -35,7 +35,13 @@ class Home extends StatelessWidget {
                   ),
                   ..._adapted(
                     _About(),
-                    _Image(),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('change_locale'.tr),
+                        _Localization(),
+                      ],
+                    ),
                     constraints,
                     before: _Title(),
                   ),
@@ -147,7 +153,7 @@ class _Footer extends StatelessWidget {
           onPressed: () => launch('https://github.com/whitepyjamas'),
         ),
         Spacer(),
-        OutlineButton(
+        MaterialButton(
           onPressed: _showBottomSheet,
           child: Text('ivan@rybalko.dev'),
         ),
@@ -236,6 +242,41 @@ class _FAB extends StatelessWidget {
         );
       }
     });
+  }
+}
+
+class _Localization extends StatelessWidget {
+  final supported = {
+    'EN': Locale('en', 'US'),
+    'RU': Locale('ru', 'RU'),
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [...supported.map(_toWidget).values],
+    );
+  }
+
+  MapEntry<String, MaterialButton> _toWidget(key, value) {
+    final current = Get.locale;
+    return MapEntry(
+      key,
+      MaterialButton(
+        child: Text(
+          key,
+          style: TextStyle(
+            color: current == value
+                ? Get.theme.accentColor
+                : Get.theme.disabledColor,
+          ),
+        ),
+        onPressed: () => Get.updateLocale(
+          value,
+        ),
+      ),
+    );
   }
 }
 
