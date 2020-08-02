@@ -13,39 +13,101 @@ class Home extends StatelessWidget {
     return Scaffold(
       floatingActionButton: GetBuilder<Scrolling>(
         init: Scrolling(scroll),
-        builder: (x) => _FAB(extended: x.top.value),
+        builder: (x) => _FAB(extended: x.isTop.value),
       ),
-      body: PageView(
-        scrollDirection: Axis.vertical,
-        controller: scroll,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final narrow = constraints.maxWidth < 800;
+          return PageView(
+            scrollDirection: Axis.vertical,
+            controller: scroll,
+            children: [
+              ...adapted(
+                _About(),
+                _Image(),
+                narrow,
+              ),
+              ...adapted(
+                _About(),
+                _Image(),
+                narrow,
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  List<Widget> adapted(Widget one, Widget two, bool narrow) {
+    if (narrow) {
+      return [
+        one.withNextPage(narrow),
+        two.withNextPage(narrow),
+      ];
+    } else {
+      return [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [one, two],
+        ).withNextPage(narrow),
+      ];
+    }
+  }
+}
+
+class _Title extends StatelessWidget {
+  const _Title({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: padding * 2,
+      child: Row(
         children: [
-          _Title(),
-          _Title(),
+          Text('Ivan Rybalko'.toUpperCase()),
+          Text('Flutter designer and developer'.toUpperCase()),
+          Spacer(),
+          Text('Experienced Unity developer'.toUpperCase()),
+        ]..addSpacing(),
+      ),
+    );
+  }
+}
+
+class _About extends StatelessWidget {
+  const _About({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+      child: Column(
+        children: [
+          Spacer(),
+          Flexible(child: Text(dummyShort)),
+          Flexible(child: Text(dummyLarge)),
+          Spacer(),
         ],
       ),
     );
   }
 }
 
-class _Title extends StatelessWidget {
+class _Image extends StatelessWidget {
+  const _Image({
+    Key key,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: padding * 2,
-          child: Row(
-            children: [
-              Text('Ivan Rybalko'.toUpperCase()),
-              Text('Flutter designer and developer'.toUpperCase()),
-              Spacer(),
-              Text('Experienced Unity developer'.toUpperCase()),
-            ]..addSpacing(),
-          ),
-        ),
-        Expanded(child: _Greeting()),
-        _NextPage(),
-      ],
+    return Flexible(
+      child: Container(
+        color: Colors.yellow,
+      ),
     );
   }
 }
@@ -65,32 +127,6 @@ class _NextPage extends StatelessWidget {
           curve: Curves.easeOutQuad,
         ),
       ),
-    );
-  }
-}
-
-class _Greeting extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Flexible(
-          child: Column(
-            children: [
-              Spacer(),
-              Flexible(child: Text(dummyShort)),
-              Flexible(child: Text(dummyLarge)),
-              Spacer(),
-            ],
-          ),
-        ),
-        Flexible(
-          child: Container(
-            color: Colors.yellow,
-          ),
-        ),
-      ],
     );
   }
 }
@@ -116,7 +152,6 @@ class _FAB extends StatelessWidget {
         child: Icon(Icons.email),
       );
     }
-    ;
   }
 
   Future _showBottomSheet() {
@@ -127,6 +162,17 @@ class _FAB extends StatelessWidget {
           Radius.circular(20),
         ),
       ),
+    );
+  }
+}
+
+extension NextPageExtension on Widget {
+  Widget withNextPage(bool narrow) {
+    return Column(
+      children: [
+        narrow ? this : Flexible(child: this),
+        _NextPage(),
+      ],
     );
   }
 }

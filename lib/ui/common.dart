@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:rybalko_dev/ui/constant.dart';
 
 class Scrolling extends GetxController {
-  final top = true.obs;
+  final isTop = true.obs;
   final ScrollController scroll;
 
   Scrolling(this.scroll) {
@@ -17,7 +17,7 @@ class Scrolling extends GetxController {
   }
 
   void _setTop() {
-    top.value = scroll.position.pixels < 30;
+    isTop.value = scroll.position.pixels < 30;
     update();
   }
 }
