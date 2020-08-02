@@ -6,7 +6,7 @@ import 'common.dart';
 import 'mail.dart';
 
 class Home extends StatelessWidget {
-  final scroll = PageController();
+  final scroll = Get.put(PageController());
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class _Title extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: 50,
+          height: padding * 2,
           child: Row(
             children: [
               Text('Ivan Rybalko'.toUpperCase()),
@@ -44,7 +44,27 @@ class _Title extends StatelessWidget {
           ),
         ),
         Expanded(child: _Greeting()),
+        _NextPage(),
       ],
+    );
+  }
+}
+
+class _NextPage extends StatelessWidget {
+  final scroll = Get.find<PageController>();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: padding * 2,
+      child: IconButton(
+        icon: Icon(Icons.arrow_downward),
+        onPressed: () => scroll.animateToPage(
+          scroll.page.toInt() + 1,
+          duration: duration,
+          curve: Curves.easeOutQuad,
+        ),
+      ),
     );
   }
 }
