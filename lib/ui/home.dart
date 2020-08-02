@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:rybalko_dev/ui/constant.dart';
 
 import 'common.dart';
-import 'constant.dart';
 import 'mail.dart';
 
 class Home extends StatelessWidget {
-  final scroll = ScrollController();
+  final scroll = PageController();
 
   @override
   Widget build(BuildContext context) {
@@ -15,16 +15,13 @@ class Home extends StatelessWidget {
         init: Scrolling(scroll),
         builder: (x) => _FAB(extended: x.top.value),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(padding),
-        child: SingleChildScrollView(
-          controller: scroll,
-          child: Column(
-            children: [
-              _Title(),
-            ],
-          ),
-        ),
+      body: PageView(
+        scrollDirection: Axis.vertical,
+        controller: scroll,
+        children: [
+          _Title(),
+          _Title(),
+        ],
       ),
     );
   }
@@ -33,16 +30,47 @@ class Home extends StatelessWidget {
 class _Title extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 50,
-      child: Row(
-        children: [
-          Text('Ivan Rybalko'.toUpperCase()),
-          Text('Flutter designer and developer'.toUpperCase()),
-          Spacer(),
-          Text('Experienced Unity developer'.toUpperCase()),
-        ]..addSpacing(),
-      ),
+    return Column(
+      children: [
+        SizedBox(
+          height: 50,
+          child: Row(
+            children: [
+              Text('Ivan Rybalko'.toUpperCase()),
+              Text('Flutter designer and developer'.toUpperCase()),
+              Spacer(),
+              Text('Experienced Unity developer'.toUpperCase()),
+            ]..addSpacing(),
+          ),
+        ),
+        Expanded(child: _Greeting()),
+      ],
+    );
+  }
+}
+
+class _Greeting extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Flexible(
+          child: Column(
+            children: [
+              Spacer(),
+              Flexible(child: Text(dummyShort)),
+              Flexible(child: Text(dummyLarge)),
+              Spacer(),
+            ],
+          ),
+        ),
+        Flexible(
+          child: Container(
+            color: Colors.yellow,
+          ),
+        ),
+      ],
     );
   }
 }
