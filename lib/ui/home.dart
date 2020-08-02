@@ -167,12 +167,12 @@ class _NextPage extends StatelessWidget {
         if (scrolling.isFooter.value) {
           return SizedBox();
         }
-        return Padding(
-          padding: const EdgeInsets.all(kPadding * 2),
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: SizedBox(
-              height: kPadding * 2,
+        return Align(
+          alignment: Alignment.bottomCenter,
+          child: padded(
+            factor: 5,
+            child: Material(
+              color: Colors.transparent,
               child: IconButton(
                 icon: Icon(Icons.arrow_downward),
                 onPressed: () => scroll.animateToPage(

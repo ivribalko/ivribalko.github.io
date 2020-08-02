@@ -26,8 +26,8 @@ class Scrolling extends GetxController {
 }
 
 extension ListExtensions on List<Widget> {
-  void addSpacing({double multiplier = 1.0}) {
-    var size = kPadding * multiplier;
+  void addSpacing({double factor = 1.0}) {
+    var size = kPadding * factor;
     for (var i = length - 1; i > 0; i--) {
       insert(i, SizedBox(width: size, height: size));
     }
@@ -39,3 +39,11 @@ extension ConstraintsExtension on BoxConstraints {
 }
 
 Widget get padding => const SizedBox(width: kPadding, height: kPadding);
+
+Widget padded({double factor = 1.0, Widget child}) {
+  return SizedBox(
+    width: kPadding * factor,
+    height: kPadding * factor,
+    child: child,
+  );
+}
