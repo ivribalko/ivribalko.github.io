@@ -41,9 +41,8 @@ extension ConstraintsExtension on BoxConstraints {
 Widget get padding => const SizedBox(width: kPadding, height: kPadding);
 
 Widget padded({double factor = 1.0, Widget child}) {
-  return SizedBox(
-    width: kPadding * factor,
-    height: kPadding * factor,
+  return Padding(
+    padding: EdgeInsets.all(kPadding * factor),
     child: child,
   );
 }

@@ -31,20 +31,20 @@ class Home extends StatelessWidget {
                     _About(),
                     _Image(),
                     constraints,
-                    before: _Header(),
+                    before: padded(child: _Header()),
                   ),
                   ..._adapted(
                     _About(),
                     _Image(),
                     constraints,
-                    before: _Title(),
+                    before: padded(child: _Title()),
                   ),
                   ..._adapted(
                     _About(),
                     _Image(),
                     constraints,
-                    before: _Title(),
-                    append: _Footer(),
+                    before: padded(child: _Title()),
+                    append: padded(child: _Footer()),
                   ),
                 ],
               ),
@@ -66,8 +66,18 @@ class Home extends StatelessWidget {
     var narrow = constraints.isNarrow;
     if (narrow) {
       return [
-        Column(children: [if (before != null) before, Flexible(child: one)]),
-        Column(children: [Flexible(child: two), if (append != null) append]),
+        Column(
+          children: [
+            if (before != null) before,
+            Flexible(child: padded(child: one)),
+          ]..addSpacing(),
+        ),
+        Column(
+          children: [
+            Flexible(child: padded(child: two)),
+            if (append != null) append,
+          ]..addSpacing(),
+        ),
       ];
     } else {
       return [
@@ -76,7 +86,10 @@ class Home extends StatelessWidget {
           Flexible(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [Flexible(child: one), Flexible(child: two)],
+              children: [
+                Flexible(child: padded(child: one)),
+                Flexible(child: padded(child: two)),
+              ]..addSpacing(),
             ),
           ),
           if (append != null) append
@@ -89,16 +102,13 @@ class Home extends StatelessWidget {
 class _Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: kPadding * 4,
-      child: Row(
-        children: [
-          Text('Ivan Rybalko'.toUpperCase()),
-          Text('Flutter designer and developer'.toUpperCase()),
-          Spacer(),
-          Text('Experienced Unity developer'.toUpperCase()),
-        ]..addSpacing(),
-      ),
+    return Row(
+      children: [
+        Text('Ivan Rybalko'.toUpperCase()),
+        Text('Flutter developer'.toUpperCase()),
+        Spacer(),
+        Text('Experienced Unity developer'.toUpperCase()),
+      ]..addSpacing(),
     );
   }
 }
@@ -117,32 +127,29 @@ class _Title extends StatelessWidget {
 class _Footer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: kPadding * 4,
-      child: Row(
-        children: [
-          Text('© Ivan Rybalko, 2020'),
-          Spacer(),
-          IconButton(
-            icon: Icon(MdiIcons.linkedin),
-            onPressed: () =>
-                launch('https://www.linkedin.com/in/ivan-rybalko-38b92a151/'),
-          ),
-          IconButton(
-            icon: Icon(MdiIcons.telegram),
-            onPressed: () => launch('https://t.me/whitepyjamas'),
-          ),
-          IconButton(
-            icon: Icon(MdiIcons.github),
-            onPressed: () => launch('https://github.com/whitepyjamas'),
-          ),
-          Spacer(),
-          OutlineButton(
-            onPressed: _showBottomSheet,
-            child: Text('ivan@rybalko.dev'),
-          ),
-        ]..addSpacing(),
-      ),
+    return Row(
+      children: [
+        Text('© Ivan Rybalko, 2020'),
+        Spacer(),
+        IconButton(
+          icon: Icon(MdiIcons.linkedin),
+          onPressed: () =>
+              launch('https://www.linkedin.com/in/ivan-rybalko-38b92a151/'),
+        ),
+        IconButton(
+          icon: Icon(MdiIcons.telegram),
+          onPressed: () => launch('https://t.me/whitepyjamas'),
+        ),
+        IconButton(
+          icon: Icon(MdiIcons.github),
+          onPressed: () => launch('https://github.com/whitepyjamas'),
+        ),
+        Spacer(),
+        OutlineButton(
+          onPressed: _showBottomSheet,
+          child: Text('ivan@rybalko.dev'),
+        ),
+      ]..addSpacing(),
     );
   }
 }
@@ -184,8 +191,9 @@ class _NextPage extends StatelessWidget {
         }
         return Align(
           alignment: Alignment.bottomCenter,
-          child: padded(
-            factor: 5,
+          child: SizedBox(
+            width: 80,
+            height: 80,
             child: Material(
               color: Colors.transparent,
               child: IconButton(
