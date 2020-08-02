@@ -152,9 +152,7 @@ class _About extends StatelessWidget {
 class _Image extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.yellow,
-    );
+    return Center(child: Image.asset('vga.png'));
   }
 }
 
