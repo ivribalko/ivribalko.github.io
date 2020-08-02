@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:typicons_flutter/typicons_flutter.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'common.dart';
@@ -10,31 +10,43 @@ import 'mail.dart';
 class Home extends StatelessWidget {
   final scroll = Get.put(PageController());
 
+  Home() {
+    Get.put(Scrolling(scroll));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: GetBuilder<Scrolling>(
-        init: Scrolling(scroll),
-        builder: _buildFAB,
-      ),
+      floatingActionButton: _FAB(),
       body: LayoutBuilder(
         builder: (context, constraints) {
-          return PageView(
-            scrollDirection: Axis.vertical,
-            controller: scroll,
-            pageSnapping: false,
+          return Stack(
             children: [
-              ...adapted(
-                _About(),
-                _Image(),
-                constraints,
+              PageView(
+                scrollDirection: Axis.vertical,
+                controller: scroll,
+                pageSnapping: false,
+                children: [
+                  ..._adapted(
+                    _About(),
+                    _Image(),
+                    constraints,
+                    before: _Header(),
+                  ),
+                  ..._adapted(
+                    _About(),
+                    _Image(),
+                    constraints,
+                  ),
+                  ..._adapted(
+                    _About(),
+                    _Image(),
+                    constraints,
+                    append: _Footer(),
+                  ),
+                ],
               ),
-              ...adapted(
-                _About(),
-                _Image(),
-                constraints,
-                isLast: true,
-              ),
+              _NextPage(),
             ],
           );
         },
@@ -42,45 +54,41 @@ class Home extends StatelessWidget {
     );
   }
 
-  Widget _buildFAB(Scrolling x) {
-    return x.isFooter.value ? SizedBox() : _FAB(extended: x.isHeader.value);
-  }
-
-  List<Widget> adapted(
+  List<Widget> _adapted(
     Widget one,
     Widget two,
     BoxConstraints constraints, {
-    bool isLast = false,
+    Widget before,
+    Widget append,
   }) {
     var narrow = constraints.isNarrow;
     if (narrow) {
       return [
-        one.withNextPage(narrow),
-        isLast ? Column(children: [two, _Footer()]) : two.withNextPage(narrow)
+        Column(children: [if (before != null) before, Flexible(child: one)]),
+        Column(children: [Flexible(child: two), if (append != null) append]),
       ];
     } else {
-      final row = Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [one, two],
-      );
       return [
-        isLast
-            ? Column(children: [Flexible(child: row), _Footer()])
-            : row.withNextPage(narrow)
+        Column(children: [
+          if (before != null) before,
+          Flexible(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [Flexible(child: one), Flexible(child: two)],
+            ),
+          ),
+          if (append != null) append
+        ])
       ];
     }
   }
 }
 
 class _Header extends StatelessWidget {
-  const _Header({
-    Key key,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: kPadding * 2,
+      height: kPadding * 4,
       child: Row(
         children: [
           Text('Ivan Rybalko'.toUpperCase()),
@@ -103,16 +111,16 @@ class _Footer extends StatelessWidget {
           Text('© Ivan Rybalko, 2020'),
           Spacer(),
           IconButton(
-            icon: Icon(Typicons.social_linkedin),
+            icon: Icon(MdiIcons.linkedin),
             onPressed: () =>
                 launch('https://www.linkedin.com/in/ivan-rybalko-38b92a151/'),
           ),
           IconButton(
-            icon: Icon(Typicons.social_instagram),
-            onPressed: () => launch('https://www.instagram.com/ivribalko/'),
+            icon: Icon(MdiIcons.telegram),
+            onPressed: () => launch('https://t.me/whitepyjamas'),
           ),
           IconButton(
-            icon: Icon(Typicons.social_github),
+            icon: Icon(MdiIcons.github),
             onPressed: () => launch('https://github.com/whitepyjamas'),
           ),
           Spacer(),
@@ -133,91 +141,78 @@ class _About extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Flexible(child: Text(kDummyShort)),
-          Flexible(child: Text(kDummyLarge + kDummyLarge)),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Flexible(child: Text(kDummyShort)),
+        Flexible(child: Text(kDummyLarge + kDummyLarge)),
+      ],
     );
   }
 }
 
 class _Image extends StatelessWidget {
-  const _Image({
-    Key key,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: Container(
-        color: Colors.yellow,
-      ),
-    );
+    return Center(child: Image.asset('vga.png'));
   }
 }
 
 class _NextPage extends StatelessWidget {
   final scroll = Get.find<PageController>();
+  final scrolling = Get.find<Scrolling>();
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: kPadding * 2,
-      child: IconButton(
-        icon: Icon(Icons.arrow_downward),
-        onPressed: () => scroll.animateToPage(
-          scroll.page.toInt() + 1,
-          duration: kDuration,
-          curve: Curves.easeOutQuad,
-        ),
-      ),
+    return Obx(
+      () {
+        if (scrolling.isFooter.value) {
+          return SizedBox();
+        }
+        return Align(
+          alignment: Alignment.bottomCenter,
+          child: padded(
+            factor: 5,
+            child: Material(
+              color: Colors.transparent,
+              child: IconButton(
+                icon: Icon(Icons.arrow_downward),
+                onPressed: () => scroll.animateToPage(
+                  scroll.page.toInt() + 1,
+                  duration: kDuration,
+                  curve: Curves.easeOutQuad,
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
 
 class _FAB extends StatelessWidget {
-  final bool extended;
-  const _FAB({
-    Key key,
-    this.extended,
-  }) : super(key: key);
+  final scrolling = Get.find<Scrolling>();
 
   @override
   Widget build(BuildContext context) {
-    if (extended) {
-      return FloatingActionButton.extended(
-        onPressed: _showBottomSheet,
-        label: Text('Contact'),
-        icon: Icon(Icons.email),
-      );
-    } else {
-      return FloatingActionButton(
-        onPressed: _showBottomSheet,
-        child: Icon(Icons.email),
-      );
-    }
-  }
-}
-
-extension NextPageExtension on Widget {
-  Widget withNextPage(bool narrow) {
-    return Column(
-      children: [
-        narrow ? this : Flexible(child: this),
-        _NextPage(),
-        padding,
-      ]..addSpacing(),
-    );
-  }
-}
-
-extension NextPageListExtension on List<Widget> {
-  Iterable<Widget> withNextPage(bool narrow) {
-    return map((e) => e.withNextPage(narrow));
+    return Obx(() {
+      if (scrolling.isFooter.value) {
+        return SizedBox();
+      }
+      if (scrolling.isHeader.value) {
+        return FloatingActionButton.extended(
+          onPressed: _showBottomSheet,
+          label: Text('Contact'),
+          icon: Icon(Icons.email),
+        );
+      } else {
+        return FloatingActionButton(
+          onPressed: _showBottomSheet,
+          child: Icon(Icons.email),
+        );
+      }
+    });
   }
 }
 
