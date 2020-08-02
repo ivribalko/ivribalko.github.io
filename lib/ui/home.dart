@@ -119,7 +119,7 @@ class _Title extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      kDummyShort.toUpperCase(),
+      'kDummyShort'.tr.toUpperCase(),
       textAlign: TextAlign.center,
       style: Get.textTheme.headline2,
     );
@@ -166,8 +166,8 @@ class _About extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Flexible(child: Text(kDummyShort)),
-        Flexible(child: Text(kDummyLarge + kDummyLarge)),
+        Flexible(child: Text('kDummyShort'.tr)),
+        Flexible(child: Text('kDummyLarge'.tr * 2)),
       ]..addSpacing(),
     );
   }
