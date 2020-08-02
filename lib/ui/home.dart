@@ -5,7 +5,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'common.dart';
 import 'constant.dart';
-import 'mail.dart';
 
 class Home extends StatelessWidget {
   final scroll = Get.put(PageController());
@@ -154,7 +153,7 @@ class _Footer extends StatelessWidget {
         ),
         Spacer(),
         MaterialButton(
-          onPressed: _showBottomSheet,
+          onPressed: _mail,
           child: Text('ivan@rybalko.dev'),
         ),
       ]..addSpacing(),
@@ -231,13 +230,13 @@ class _FAB extends StatelessWidget {
       }
       if (scrolling.isHeader.value) {
         return FloatingActionButton.extended(
-          onPressed: _showBottomSheet,
+          onPressed: _mail,
           label: Text('email_me'.tr),
           icon: Icon(Icons.email),
         );
       } else {
         return FloatingActionButton(
-          onPressed: _showBottomSheet,
+          onPressed: _mail,
           child: Icon(Icons.email),
         );
       }
@@ -280,13 +279,6 @@ class _Localization extends StatelessWidget {
   }
 }
 
-Future _showBottomSheet() {
-  return Get.bottomSheet(
-    Mail(),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(
-        Radius.circular(20),
-      ),
-    ),
-  );
+void _mail() {
+  launch('mailto:ivan@rybalko.dev?subject=${'inquiry'.tr}');
 }

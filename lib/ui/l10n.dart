@@ -4,6 +4,7 @@ const Map<String, Map<String, String>> translationsKeys = {
 };
 
 const Map<String, String> translationsKeysEn = {
+  'inquiry': 'Website Development Inquiry',
   'email_me': 'Contact',
   'ivan_rybalko': 'Ivan Rybalko',
   'flutter_developer': 'Flutter developer',
@@ -16,6 +17,7 @@ const Map<String, String> translationsKeysEn = {
 };
 
 const Map<String, String> translationsKeysRu = {
+  'inquiry': 'Вопрос по разработке сайта',
   'email_me': 'Связаться',
   'ivan_rybalko': 'Иван Рыбалко',
   'flutter_developer': 'Flutter-разработчик',
