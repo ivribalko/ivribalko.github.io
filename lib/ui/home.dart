@@ -37,9 +37,11 @@ class Home extends StatelessWidget {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('change_locale'.tr),
+                        Text('change_locale'.tr, textAlign: TextAlign.center),
                         _Localization(),
-                      ],
+                        Text('change_theme'.tr, textAlign: TextAlign.center),
+                        _Theming(),
+                      ]..addSpacing(),
                     ),
                     constraints,
                     before: _Title(),
@@ -244,10 +246,45 @@ class _FAB extends StatelessWidget {
   }
 }
 
+class _Theming extends StatelessWidget {
+  final supported = {
+    'EN': Locale('en', 'US'),
+    'РУ': Locale('ru', 'RU'),
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [...supported.map(_toWidget).values],
+    );
+  }
+
+  MapEntry<String, MaterialButton> _toWidget(key, value) {
+    final current = Get.locale;
+    return MapEntry(
+      key,
+      MaterialButton(
+        child: Text(
+          key,
+          style: TextStyle(
+            color: current == value
+                ? Get.theme.accentColor
+                : Get.theme.disabledColor,
+          ),
+        ),
+        onPressed: () => Get.updateLocale(
+          value,
+        ),
+      ),
+    );
+  }
+}
+
 class _Localization extends StatelessWidget {
   final supported = {
     'EN': Locale('en', 'US'),
-    'RU': Locale('ru', 'RU'),
+    'РУ': Locale('ru', 'RU'),
   };
 
   @override
