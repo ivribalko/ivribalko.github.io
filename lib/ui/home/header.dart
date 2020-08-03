@@ -6,13 +6,19 @@ import '../common.dart';
 class Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text('ivan_rybalko'.tr.toUpperCase()),
-        Text('flutter_developer'.tr.toUpperCase()),
-        Spacer(),
-        Text('unity_developer'.tr.toUpperCase()),
-      ]..addSpacing(),
+    return SizedBox(
+      height: 50,
+      child: Row(
+        children: [
+          Image.asset(
+            'photo-social-circle.png',
+            fit: BoxFit.fill,
+          ),
+          Text('ivan_rybalko'.tr.toUpperCase()),
+          Spacer(),
+          Text('flutter_developer'.tr.toUpperCase()),
+        ]..addSpacing(),
+      ),
     );
   }
 }

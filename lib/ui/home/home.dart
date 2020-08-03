@@ -7,10 +7,9 @@ import 'about.dart';
 import 'fab.dart';
 import 'footer.dart';
 import 'header.dart';
-import 'localization.dart';
 import 'next_page.dart';
 import 'pic.dart';
-import 'theming.dart';
+import 'settings.dart';
 
 class Home extends StatelessWidget {
   final scroll = Get.put(PageController());
@@ -23,52 +22,38 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FAB(),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return ResponsiveBuilder(
-            builder: (context, info) {
-              return Stack(
+      body: ResponsiveBuilder(
+        builder: (context, info) {
+          return Stack(
+            children: [
+              PageView(
+                scrollDirection: Axis.vertical,
+                controller: scroll,
+                pageSnapping: false,
                 children: [
-                  PageView(
-                    scrollDirection: Axis.vertical,
-                    controller: scroll,
-                    pageSnapping: false,
-                    children: [
-                      ..._adapted(
-                        About(),
-                        Pic(),
-                        info,
-                        before: Header(),
-                      ),
-                      ..._adapted(
-                        About(),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text('change_locale'.tr,
-                                textAlign: TextAlign.center),
-                            Localization(),
-                            Text('change_theme'.tr,
-                                textAlign: TextAlign.center),
-                            Theming(),
-                          ]..addSpacing(),
-                        ),
-                        info,
-                        before: SubHeader(),
-                      ),
-                      ..._adapted(
-                        About(),
-                        Pic(),
-                        info,
-                        before: SubHeader(),
-                        append: Footer(),
-                      ),
-                    ],
+                  ..._adapted(
+                    About(),
+                    Pic(),
+                    info,
+                    before: Header(),
                   ),
-                  NextPage(),
+                  ..._adapted(
+                    About(),
+                    Settings(),
+                    info,
+                    before: SubHeader(),
+                  ),
+                  ..._adapted(
+                    About(),
+                    Pic(),
+                    info,
+                    before: SubHeader(),
+                    append: Footer(),
+                  ),
                 ],
-              );
-            },
+              ),
+              NextPage(),
+            ],
           );
         },
       ),
