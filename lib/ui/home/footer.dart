@@ -12,18 +12,23 @@ class Footer extends StatelessWidget {
       children: [
         Text('© ${'ivan_rybalko'.tr}, 2020'),
         Spacer(),
-        IconButton(
-          icon: Icon(MdiIcons.linkedin),
-          onPressed: () =>
-              launch('https://www.linkedin.com/in/ivan-rybalko-38b92a151/'),
-        ),
-        IconButton(
-          icon: Icon(MdiIcons.telegram),
-          onPressed: () => launch('https://t.me/whitepyjamas'),
-        ),
-        IconButton(
-          icon: Icon(MdiIcons.github),
-          onPressed: () => launch('https://github.com/whitepyjamas'),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: Icon(MdiIcons.linkedin),
+              onPressed: () =>
+                  launch('https://www.linkedin.com/in/ivan-rybalko-38b92a151/'),
+            ),
+            IconButton(
+              icon: Icon(MdiIcons.telegram),
+              onPressed: () => launch('https://t.me/whitepyjamas'),
+            ),
+            IconButton(
+              icon: Icon(MdiIcons.github),
+              onPressed: () => launch('https://github.com/whitepyjamas'),
+            ),
+          ],
         ),
         Spacer(),
         MaterialButton(
