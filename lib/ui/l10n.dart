@@ -11,7 +11,7 @@ const Map<String, String> translationsKeysEn = {
   'unity_developer': 'Experienced Unity developer',
   'change_locale':
       'Changing language is as easy as clicking this button. Try it now:',
-  'change_theme': 'Changing themes has never been as easy:',
+  'change_theme': 'Changing themes has never been as fluent:',
   'dark_theme': 'Dark',
   'light_theme': 'Light',
   'kDummyShort': 'Lorem ipsum dolor',
@@ -26,7 +26,7 @@ const Map<String, String> translationsKeysRu = {
   'flutter_developer': 'Flutter-разработчик',
   'unity_developer': 'Опытный Unity-разработчик',
   'change_locale':
-      'Сменить язык так же просто, как нажать на кнопку. Попробуйте.',
+      'Сменить язык так же быстро, как нажать на кнопку. Попробуйте.',
   'change_theme': 'Тёмная и светлая тема? Нет ничего проще:',
   'dark_theme': 'Тёмная',
   'light_theme': 'Светлая',

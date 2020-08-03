@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'common.dart';
 import 'constant.dart';
+import 'theme.dart';
 
 class Home extends StatelessWidget {
   final scroll = Get.put(PageController());
@@ -247,35 +248,22 @@ class _FAB extends StatelessWidget {
 }
 
 class _Theming extends StatelessWidget {
-  final supported = {
-    'dark_theme': Locale('en', 'US'),
-    'light_theme': Locale('ru', 'RU'),
-  };
-
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [...supported.map(_toWidget).values],
+      children: [...modes.map(_toWidget).values],
     );
   }
 
-  MapEntry<String, MaterialButton> _toWidget(String key, value) {
-    final current = Get.locale;
+  MapEntry<String, MaterialButton> _toWidget(String key, ThemeMode value) {
     return MapEntry(
       key,
       MaterialButton(
         child: Text(
           key.tr,
-          style: TextStyle(
-            color: current == value
-                ? Get.theme.accentColor
-                : Get.theme.disabledColor,
-          ),
         ),
-        onPressed: () => Get.updateLocale(
-          value,
-        ),
+        onPressed: () => Get.changeThemeMode(value),
       ),
     );
   }
@@ -296,21 +284,13 @@ class _Localization extends StatelessWidget {
   }
 
   MapEntry<String, MaterialButton> _toWidget(key, value) {
-    final current = Get.locale;
     return MapEntry(
       key,
       MaterialButton(
         child: Text(
           key,
-          style: TextStyle(
-            color: current == value
-                ? Get.theme.accentColor
-                : Get.theme.disabledColor,
-          ),
         ),
-        onPressed: () => Get.updateLocale(
-          value,
-        ),
+        onPressed: () => Get.updateLocale(value),
       ),
     );
   }

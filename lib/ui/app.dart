@@ -14,7 +14,8 @@ class App extends StatelessWidget {
     return GetMaterialApp(
       title: 'Ivan Rybalko - Flutter developer in NY',
       translationsKeys: translationsKeys,
-      theme: theme,
+      theme: themes[light],
+      darkTheme: themes[dark],
       home: Home(),
     );
   }
