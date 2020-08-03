@@ -248,8 +248,8 @@ class _FAB extends StatelessWidget {
 
 class _Theming extends StatelessWidget {
   final supported = {
-    'EN': Locale('en', 'US'),
-    'РУ': Locale('ru', 'RU'),
+    'dark_theme': Locale('en', 'US'),
+    'light_theme': Locale('ru', 'RU'),
   };
 
   @override
@@ -260,13 +260,13 @@ class _Theming extends StatelessWidget {
     );
   }
 
-  MapEntry<String, MaterialButton> _toWidget(key, value) {
+  MapEntry<String, MaterialButton> _toWidget(String key, value) {
     final current = Get.locale;
     return MapEntry(
       key,
       MaterialButton(
         child: Text(
-          key,
+          key.tr,
           style: TextStyle(
             color: current == value
                 ? Get.theme.accentColor

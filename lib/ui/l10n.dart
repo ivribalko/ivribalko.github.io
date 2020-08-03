@@ -11,7 +11,9 @@ const Map<String, String> translationsKeysEn = {
   'unity_developer': 'Experienced Unity developer',
   'change_locale':
       'Changing language is as easy as clicking this button. Try it now:',
-  'change_theme': 'Getting dark theme has never been as easy:',
+  'change_theme': 'Changing themes has never been as easy:',
+  'dark_theme': 'Dark',
+  'light_theme': 'Light',
   'kDummyShort': 'Lorem ipsum dolor',
   'kDummyLarge':
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
@@ -25,7 +27,9 @@ const Map<String, String> translationsKeysRu = {
   'unity_developer': 'Опытный Unity-разработчик',
   'change_locale':
       'Сменить язык так же просто, как нажать на кнопку. Попробуйте.',
-  'change_theme': 'Тёмная тема? Нет ничего проще:',
+  'change_theme': 'Тёмная и светлая тема? Нет ничего проще:',
+  'dark_theme': 'Тёмная',
+  'light_theme': 'Светлая',
   'kDummyShort': 'Лорем ипсум долор',
   'kDummyLarge':
       'Лорем ипсум долор сит амет, цонсецтетур адиписцинг елит, сед до еиусмод темпор инцидидунт ут лаборе ет долоре магна алияуа. Ут еним ад миним вениам, яуис ноструд ехерцитатион улламцо лаборис ниси ут алияуип ех еа цоммодо цонсеяуат. Дуис ауте ируре долор ин репрехендерит ин волуптате велит ессе циллум долоре еу фугиат нулла париатур. Ехцептеур синт оццаецат цупидатат нон проидент, сунт ин цулпа яуи оффициа десерунт моллит аним ид ест лаборум.',
