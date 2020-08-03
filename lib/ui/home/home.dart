@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 import '../common.dart';
 import 'about.dart';
@@ -24,44 +25,50 @@ class Home extends StatelessWidget {
       floatingActionButton: FAB(),
       body: LayoutBuilder(
         builder: (context, constraints) {
-          return Stack(
-            children: [
-              PageView(
-                scrollDirection: Axis.vertical,
-                controller: scroll,
-                pageSnapping: false,
+          return ResponsiveBuilder(
+            builder: (context, info) {
+              return Stack(
                 children: [
-                  ..._adapted(
-                    About(),
-                    Pic(),
-                    constraints,
-                    before: Header(),
+                  PageView(
+                    scrollDirection: Axis.vertical,
+                    controller: scroll,
+                    pageSnapping: false,
+                    children: [
+                      ..._adapted(
+                        About(),
+                        Pic(),
+                        info,
+                        before: Header(),
+                      ),
+                      ..._adapted(
+                        About(),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('change_locale'.tr,
+                                textAlign: TextAlign.center),
+                            Localization(),
+                            Text('change_theme'.tr,
+                                textAlign: TextAlign.center),
+                            Theming(),
+                          ]..addSpacing(),
+                        ),
+                        info,
+                        before: SubHeader(),
+                      ),
+                      ..._adapted(
+                        About(),
+                        Pic(),
+                        info,
+                        before: SubHeader(),
+                        append: Footer(),
+                      ),
+                    ],
                   ),
-                  ..._adapted(
-                    About(),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('change_locale'.tr, textAlign: TextAlign.center),
-                        Localization(),
-                        Text('change_theme'.tr, textAlign: TextAlign.center),
-                        Theming(),
-                      ]..addSpacing(),
-                    ),
-                    constraints,
-                    before: SubHeader(),
-                  ),
-                  ..._adapted(
-                    About(),
-                    Pic(),
-                    constraints,
-                    before: SubHeader(),
-                    append: Footer(),
-                  ),
+                  NextPage(),
                 ],
-              ),
-              NextPage(),
-            ],
+              );
+            },
           );
         },
       ),
@@ -71,12 +78,11 @@ class Home extends StatelessWidget {
   List<Widget> _adapted(
     Widget one,
     Widget two,
-    BoxConstraints constraints, {
+    SizingInformation info, {
     Widget before,
     Widget append,
   }) {
-    var narrow = constraints.isNarrow;
-    if (narrow) {
+    if (info.isMobile) {
       return [
         Column(
           children: [
