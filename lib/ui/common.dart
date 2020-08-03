@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:rybalko_dev/ui/constant.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Scrolling extends GetxController {
   final isHeader = true.obs;
@@ -45,4 +46,8 @@ Widget padded({double factor = 1.0, Widget child}) {
     padding: EdgeInsets.all(kPadding * factor),
     child: child,
   );
+}
+
+void mail() {
+  launch('mailto:ivan@rybalko.dev?subject=${'inquiry'.tr}');
 }
