@@ -39,7 +39,7 @@ class Home extends StatelessWidget {
                   ),
                   ..._adapted(
                     About(),
-                    Settings(),
+                    Settings(isMobile: info.isMobile),
                     info,
                     before: SubHeader(),
                   ),
