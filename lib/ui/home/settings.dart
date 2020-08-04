@@ -58,7 +58,14 @@ class _Theming extends StatelessWidget {
       key,
       MaterialButton(
         child: Text(key.tr),
-        onPressed: () => Get.changeThemeMode(value),
+        onPressed: () {
+          Get.changeThemeMode(value);
+          // fix text not updating style/color
+          Future.delayed(
+            Duration(milliseconds: 100),
+            () => Get.updateLocale(Get.locale),
+          );
+        },
       ),
     );
   }
