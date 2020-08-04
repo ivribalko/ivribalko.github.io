@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rybalko_dev/ui/theme.dart';
 
-import 'home.dart';
+import 'home/home.dart';
 import 'l10n.dart';
 
 class App extends StatelessWidget {
@@ -14,7 +14,8 @@ class App extends StatelessWidget {
     return GetMaterialApp(
       title: 'Ivan Rybalko - Flutter developer in NY',
       translationsKeys: translationsKeys,
-      theme: theme,
+      theme: themes[light],
+      darkTheme: themes[dark],
       home: Home(),
     );
   }
