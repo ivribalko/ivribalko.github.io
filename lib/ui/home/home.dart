@@ -48,7 +48,7 @@ class Home extends StatelessWidget {
                     Pic(),
                     info,
                     before: SubHeader(),
-                    append: Footer(),
+                    append: Footer(isMobile: info.isMobile),
                   ),
                 ],
               ),
