@@ -29,7 +29,7 @@ class SubHeader extends StatelessWidget {
     return Text(
       'kDummyShort'.tr.toUpperCase(),
       textAlign: TextAlign.center,
-      style: Get.textTheme.headline2,
+      style: Get.textTheme.headline4,
     );
   }
 }
