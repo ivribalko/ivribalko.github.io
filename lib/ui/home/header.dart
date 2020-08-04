@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../common.dart';
+import '../constant.dart';
 
 class Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 50,
+      height: kFooterHeight,
       child: Row(
         children: [
           Image.asset(
@@ -34,10 +35,13 @@ class Header extends StatelessWidget {
 class SubHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Text(
-      'kDummyShort'.tr.toUpperCase(),
-      textAlign: TextAlign.center,
-      style: Get.textTheme.headline4,
+    return SizedBox(
+      height: kFooterHeight,
+      child: Text(
+        'kDummyShort'.tr.toUpperCase(),
+        textAlign: TextAlign.center,
+        style: Get.textTheme.headline4,
+      ),
     );
   }
 }

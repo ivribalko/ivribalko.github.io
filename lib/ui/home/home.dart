@@ -74,13 +74,13 @@ class Home extends StatelessWidget {
           children: [
             if (before != null) padded(child: before),
             Flexible(child: padded(child: one)),
-          ]..addSpacing(),
+          ],
         ),
         Column(
           children: [
             Flexible(child: padded(child: two)),
             if (append != null) padded(child: append),
-          ]..addSpacing(),
+          ],
         ),
       ];
     } else {
