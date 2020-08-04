@@ -12,7 +12,7 @@ class Header extends StatelessWidget {
       child: Row(
         children: [
           Image.asset(
-            'photo-social-circle.png',
+            'assets/photo-social-circle.png',
             fit: BoxFit.fill,
           ),
           Column(
