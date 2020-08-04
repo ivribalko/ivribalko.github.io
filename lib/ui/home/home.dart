@@ -91,10 +91,20 @@ class Home extends StatelessWidget {
             if (before != null) padded(child: before),
             Flexible(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Flexible(child: padded(child: one)),
-                  Flexible(child: padded(child: two)),
+                  Flexible(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(maxWidth: kMaxWidth),
+                      child: padded(child: one),
+                    ),
+                  ),
+                  Flexible(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(maxWidth: kMaxWidth),
+                      child: padded(child: two),
+                    ),
+                  ),
                 ]..addSpacing(),
               ),
             ),
