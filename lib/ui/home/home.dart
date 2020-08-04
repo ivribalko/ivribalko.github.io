@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 import '../common.dart';
+import '../constant.dart';
 import 'about.dart';
 import 'fab.dart';
 import 'footer.dart';
@@ -96,6 +97,7 @@ class Home extends StatelessWidget {
                 ]..addSpacing(),
               ),
             ),
+            SizedBox(height: kFooterHeight),
             if (append != null) padded(child: append)
           ]..addSpacing(),
         )
