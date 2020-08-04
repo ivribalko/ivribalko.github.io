@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 import '../common.dart';
 import 'about.dart';
 import 'fab.dart';
 import 'footer.dart';
 import 'header.dart';
-import 'localization.dart';
 import 'next_page.dart';
 import 'pic.dart';
-import 'theming.dart';
+import 'settings.dart';
 
 class Home extends StatelessWidget {
   final scroll = Get.put(PageController());
@@ -22,8 +22,8 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FAB(),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
+      body: ResponsiveBuilder(
+        builder: (context, info) {
           return Stack(
             children: [
               PageView(
@@ -34,29 +34,21 @@ class Home extends StatelessWidget {
                   ..._adapted(
                     About(),
                     Pic(),
-                    constraints,
+                    info,
                     before: Header(),
                   ),
                   ..._adapted(
                     About(),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('change_locale'.tr, textAlign: TextAlign.center),
-                        Localization(),
-                        Text('change_theme'.tr, textAlign: TextAlign.center),
-                        Theming(),
-                      ]..addSpacing(),
-                    ),
-                    constraints,
+                    Settings(),
+                    info,
                     before: SubHeader(),
                   ),
                   ..._adapted(
                     About(),
                     Pic(),
-                    constraints,
+                    info,
                     before: SubHeader(),
-                    append: Footer(),
+                    append: Footer(isMobile: info.isMobile),
                   ),
                 ],
               ),
@@ -71,12 +63,11 @@ class Home extends StatelessWidget {
   List<Widget> _adapted(
     Widget one,
     Widget two,
-    BoxConstraints constraints, {
+    SizingInformation info, {
     Widget before,
     Widget append,
   }) {
-    var narrow = constraints.isNarrow;
-    if (narrow) {
+    if (info.isMobile) {
       return [
         Column(
           children: [
