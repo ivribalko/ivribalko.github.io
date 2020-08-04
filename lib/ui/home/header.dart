@@ -14,9 +14,17 @@ class Header extends StatelessWidget {
             'photo-social-circle.png',
             fit: BoxFit.fill,
           ),
-          Text('ivan_rybalko'.tr.toUpperCase()),
-          Spacer(),
-          Text('flutter_developer'.tr.toUpperCase()),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'ivan_rybalko'.tr.toUpperCase(),
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text('flutter_developer'.tr.toUpperCase())
+            ],
+          ),
         ]..addSpacing(),
       ),
     );
