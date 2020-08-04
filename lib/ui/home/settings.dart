@@ -37,10 +37,17 @@ class _Localization extends StatelessWidget {
     return MapEntry(
       key,
       MaterialButton(
-        child: Text(key),
+        child: Text(
+          key,
+          style: _accentActive(value),
+        ),
         onPressed: () => Get.updateLocale(value),
       ),
     );
+  }
+
+  TextStyle _accentActive(value) {
+    return value == Get.locale ? TextStyle(color: Get.theme.accentColor) : null;
   }
 }
 
@@ -57,9 +64,26 @@ class _Theming extends StatelessWidget {
     return MapEntry(
       key,
       MaterialButton(
-        child: Text(key.tr),
-        onPressed: () => Get.changeThemeMode(value),
+        child: Text(
+          key.tr,
+          style: _accentActive(value),
+        ),
+        onPressed: () {
+          Get.changeThemeMode(value);
+          // fix text not updating style/color
+          Future.delayed(
+            Duration(milliseconds: 100),
+            () => Get.updateLocale(Get.locale),
+          );
+        },
       ),
     );
+  }
+
+  TextStyle _accentActive(ThemeMode value) {
+    return (value == ThemeMode.dark) ==
+            (Get.theme.brightness == Brightness.dark)
+        ? TextStyle(color: Get.theme.accentColor)
+        : null;
   }
 }
