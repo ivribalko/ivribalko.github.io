@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 import '../common.dart';
+import '../constant.dart';
 import 'about.dart';
 import 'fab.dart';
 import 'footer.dart';
@@ -73,13 +74,14 @@ class Home extends StatelessWidget {
           children: [
             if (before != null) padded(child: before),
             Flexible(child: padded(child: one)),
-          ]..addSpacing(),
+            padded(),
+          ],
         ),
         Column(
           children: [
             Flexible(child: padded(child: two)),
             if (append != null) padded(child: append),
-          ]..addSpacing(),
+          ],
         ),
       ];
     } else {
@@ -89,13 +91,24 @@ class Home extends StatelessWidget {
             if (before != null) padded(child: before),
             Flexible(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Flexible(child: padded(child: one)),
-                  Flexible(child: padded(child: two)),
+                  Flexible(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(maxWidth: kMaxWidth),
+                      child: padded(child: one),
+                    ),
+                  ),
+                  Flexible(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(maxWidth: kMaxWidth),
+                      child: padded(child: two),
+                    ),
+                  ),
                 ]..addSpacing(),
               ),
             ),
+            SizedBox(height: kFooterHeight),
             if (append != null) padded(child: append)
           ]..addSpacing(),
         )

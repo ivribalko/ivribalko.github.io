@@ -18,8 +18,8 @@ class NextPage extends StatelessWidget {
         return Align(
           alignment: Alignment.bottomCenter,
           child: SizedBox(
-            width: 80,
-            height: 80,
+            width: kFooterHeight,
+            height: kFooterHeight,
             child: Material(
               color: Colors.transparent,
               child: IconButton(

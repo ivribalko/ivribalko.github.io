@@ -4,6 +4,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:url_launcher/url_launcher.dart';
 
 import '../common.dart';
+import '../constant.dart';
 
 class Footer extends StatelessWidget {
   final isMobile;
@@ -43,9 +44,12 @@ class Footer extends StatelessWidget {
     if (isMobile) {
       return Column(children: children);
     } else {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: children,
+      return SizedBox(
+        height: kFooterHeight / 2,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: children,
+        ),
       );
     }
   }
