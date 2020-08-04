@@ -36,7 +36,7 @@ extension ListExtensions on List<Widget> {
 }
 
 extension ConstraintsExtension on BoxConstraints {
-  bool get isNarrow => maxWidth < 800;
+  bool get isMobile => maxWidth < 700 || maxWidth * maxHeight < 400 * 1000;
 }
 
 Widget get padding => const SizedBox(width: kPadding, height: kPadding);

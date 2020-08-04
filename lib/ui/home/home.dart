@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:responsive_builder/responsive_builder.dart';
 
 import '../common.dart';
 import '../constant.dart';
@@ -23,7 +22,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FAB(),
-      body: ResponsiveBuilder(
+      body: LayoutBuilder(
         builder: (context, info) {
           return Stack(
             children: [
@@ -64,7 +63,7 @@ class Home extends StatelessWidget {
   List<Widget> _adapted(
     Widget one,
     Widget two,
-    SizingInformation info, {
+    BoxConstraints info, {
     Widget before,
     Widget append,
   }) {
