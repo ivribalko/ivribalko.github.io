@@ -13,8 +13,8 @@ class About extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Flexible(child: Text('kDummyShort'.tr)),
-        Flexible(child: Text('kDummyLarge'.tr * 2)),
+        Text('kDummyShort'.tr),
+        Text('kDummyLarge'.tr * 2),
       ]..addSpacing(),
     );
   }
