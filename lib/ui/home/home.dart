@@ -74,6 +74,7 @@ class Home extends StatelessWidget {
           children: [
             if (before != null) padded(child: before),
             Flexible(child: padded(child: one)),
+            padded(),
           ],
         ),
         Column(
