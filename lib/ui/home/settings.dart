@@ -87,8 +87,7 @@ class _Theming extends StatelessWidget {
   }
 
   TextStyle _accentActive(ThemeMode value) {
-    return (value == ThemeMode.dark) ==
-            (Get.theme.brightness == Brightness.dark)
+    return (value == ThemeMode.dark) == (Get.isPlatformDarkMode)
         ? TextStyle(color: Get.theme.accentColor)
         : null;
   }
