@@ -13,6 +13,7 @@ import 'settings.dart';
 
 class Home extends StatelessWidget {
   final scroll = Get.put(PageController());
+  final narrowed = Get.put(false.obs);
 
   Home() {
     Get.put(Scrolling(scroll));
@@ -22,41 +23,48 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FAB(),
-      body: LayoutBuilder(
-        builder: (context, info) {
-          return Stack(
-            children: [
-              PageView(
-                scrollDirection: Axis.vertical,
-                controller: scroll,
-                pageSnapping: false,
-                children: [
-                  ..._adapted(
-                    About(),
-                    Pic(),
-                    info,
-                    before: Header(),
-                  ),
-                  ..._adapted(
-                    About(),
-                    Settings(isMobile: info.isMobile),
-                    info,
-                    before: SubHeader(),
-                  ),
-                  ..._adapted(
-                    About(),
-                    Pic(),
-                    info,
-                    before: SubHeader(),
-                    append: Footer(isMobile: info.isMobile),
-                  ),
-                ],
-              ),
-              NextPage(),
-            ],
-          );
-        },
-      ),
+      body: Obx(() {
+        return Center(
+          child: SizedBox(
+            width: narrowed.value ? mobileWidth - 200 : double.maxFinite,
+            child: LayoutBuilder(
+              builder: (context, info) {
+                return Stack(
+                  children: [
+                    PageView(
+                      scrollDirection: Axis.vertical,
+                      controller: scroll,
+                      pageSnapping: false,
+                      children: [
+                        ..._adapted(
+                          About(),
+                          Pic(),
+                          info,
+                          before: Header(),
+                        ),
+                        ..._adapted(
+                          About(),
+                          Settings(isMobile: info.isSmall),
+                          info,
+                          before: SubHeader(),
+                        ),
+                        ..._adapted(
+                          About(),
+                          Pic(),
+                          info,
+                          before: SubHeader(),
+                          append: Footer(isMobile: info.isSmall),
+                        ),
+                      ],
+                    ),
+                    NextPage(),
+                  ],
+                );
+              },
+            ),
+          ),
+        );
+      }),
     );
   }
 
@@ -67,7 +75,7 @@ class Home extends StatelessWidget {
     Widget before,
     Widget append,
   }) {
-    if (info.isMobile) {
+    if (info.isSmall) {
       return [
         Column(
           children: [

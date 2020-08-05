@@ -6,8 +6,9 @@ import '../theme.dart';
 
 class Settings extends StatelessWidget {
   final bool isMobile;
+  final narrowed = Get.find<RxBool>();
 
-  const Settings({this.isMobile});
+  Settings({this.isMobile});
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +19,13 @@ class Settings extends StatelessWidget {
         _Localization(),
         Text('change_theme'.tr, textAlign: TextAlign.center),
         _Theming(),
-        if (!isMobile) Text('change_display'.tr, textAlign: TextAlign.center),
-        if (!isMobile) _Adaptivity(),
+        if (_canNarrow) Text('change_display'.tr, textAlign: TextAlign.center),
+        if (_canNarrow) _Adaptivity(),
       ]..addSpacing(),
     );
   }
+
+  bool get _canNarrow => !isMobile || narrowed.value;
 }
 
 class _Localization extends StatelessWidget {
@@ -94,39 +97,30 @@ class _Theming extends StatelessWidget {
 }
 
 class _Adaptivity extends StatelessWidget {
-  final setMobile = false.obs;
+  final narrowed = Get.find<RxBool>();
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [...modes.map(_toWidget).values],
+      children: [
+        ...[false, true].map(_toWidget)
+      ],
     );
   }
 
-  MapEntry<String, MaterialButton> _toWidget(String key, ThemeMode value) {
-    return MapEntry(
-      key,
-      MaterialButton(
-        child: Text(
-          key.tr,
-          style: _accentActive(value),
-        ),
-        onPressed: () {
-          Get.changeThemeMode(value);
-          // fix text not updating style/color
-          Future.delayed(
-            Duration(milliseconds: 100),
-            () => Get.updateLocale(Get.locale),
-          );
-        },
+  Widget _toWidget(bool value) {
+    return MaterialButton(
+      child: Text(
+        value ? 'narrowed_on'.tr : 'narrowed_off'.tr,
+        style: _styleFor(value),
       ),
+      onPressed: () => narrowed.value = value,
     );
   }
 
-  TextStyle _accentActive(ThemeMode value) {
-    return (value == ThemeMode.dark) ==
-            (Get.theme.brightness == Brightness.dark)
+  TextStyle _styleFor(bool value) {
+    return narrowed.value == value
         ? TextStyle(color: Get.theme.accentColor)
         : null;
   }
