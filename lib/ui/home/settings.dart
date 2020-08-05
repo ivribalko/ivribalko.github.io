@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../common.dart';
+import '../constant.dart';
 import '../theme.dart';
 
 class Settings extends StatelessWidget {
@@ -29,33 +30,25 @@ class Settings extends StatelessWidget {
 }
 
 class _Localization extends StatelessWidget {
-  final supported = {
-    'English': Locale('en', 'US'),
-    'Русский': Locale('ru', 'RU'),
-  };
-
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [...supported.map(_toWidget).values],
+      children: [...locales.values.map(_toWidget)],
     );
   }
 
-  MapEntry<String, MaterialButton> _toWidget(key, value) {
-    return MapEntry(
-      key,
-      MaterialButton(
-        child: Text(
-          key,
-          style: _accentActive(value),
-        ),
-        onPressed: () => Get.updateLocale(value),
+  Widget _toWidget(Locale value) {
+    return MaterialButton(
+      child: Text(
+        value.toString().tr,
+        style: _styleFor(value),
       ),
+      onPressed: () => Get.updateLocale(value),
     );
   }
 
-  TextStyle _accentActive(value) {
+  TextStyle _styleFor(value) {
     return value == Get.locale ? TextStyle(color: Get.theme.accentColor) : null;
   }
 }
@@ -65,32 +58,29 @@ class _Theming extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [...modes.map(_toWidget).values],
+      children: [...themes.keys.map(_toWidget)],
     );
   }
 
-  MapEntry<String, MaterialButton> _toWidget(String key, ThemeMode value) {
-    return MapEntry(
-      key,
-      MaterialButton(
-        child: Text(
-          key.tr,
-          style: _accentActive(value),
-        ),
-        onPressed: () {
-          Get.changeThemeMode(value);
-          // fix text not updating style/color
-          Future.delayed(
-            Duration(milliseconds: 100),
-            () => Get.updateLocale(Get.locale),
-          );
-        },
+  Widget _toWidget(ThemeMode value) {
+    return MaterialButton(
+      child: Text(
+        value.toString().tr,
+        style: _styleFor(value),
       ),
+      onPressed: () {
+        Get.changeThemeMode(value);
+        // fix text not updating style/color
+        Future.delayed(
+          Duration(milliseconds: 100),
+          () => Get.updateLocale(Get.locale),
+        );
+      },
     );
   }
 
-  TextStyle _accentActive(ThemeMode value) {
-    return (value == ThemeMode.dark) == (Get.isPlatformDarkMode)
+  TextStyle _styleFor(ThemeMode value) {
+    return (value == ThemeMode.dark) == (Get.isDarkMode)
         ? TextStyle(color: Get.theme.accentColor)
         : null;
   }
