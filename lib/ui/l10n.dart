@@ -14,6 +14,9 @@ const Map<String, String> translationsKeysEn = {
   'change_theme': 'Changing themes has never been as fluent:',
   'dark_theme': 'Dark',
   'light_theme': 'Light',
+  'change_display': 'Responsive layout? Yes!',
+  'narrowed_off': 'Desktop',
+  'narrowed_on': 'Mobile',
   'kDummyShort': 'Lorem ipsum dolor',
   'kDummyLarge':
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa.',
@@ -30,6 +33,9 @@ const Map<String, String> translationsKeysRu = {
   'change_theme': 'Тёмная и светлая тема? Нет ничего проще:',
   'dark_theme': 'Тёмная',
   'light_theme': 'Светлая',
+  'change_display': 'Адаптивная вёрстка? Да!',
+  'narrowed_off': 'Компьютер',
+  'narrowed_on': 'Мобильный',
   'kDummyShort': 'Лорем ипсум долор',
   'kDummyLarge':
       'Лорем ипсум долор сит амет, цонсецтетур адиписцинг елит, сед до еиусмод темпор инцидидунт ут лаборе ет долоре магна алияуа. Ут еним ад миним вениам, яуис ноструд ехерцитатион улламцо лаборис ниси ут алияуип ех еа цоммодо цонсеяуат. Дуис ауте ируре долор ин репрехендерит ин волуптате велит ессе циллум долоре еу фугиат нулла париатур.',
