@@ -7,7 +7,6 @@ import '../theme.dart';
 
 class Settings extends StatelessWidget {
   final bool isMobile;
-  final narrowed = Get.find<RxBool>();
 
   Settings({this.isMobile});
 
@@ -26,47 +25,43 @@ class Settings extends StatelessWidget {
     );
   }
 
-  bool get _canNarrow => !isMobile || narrowed.value;
+  bool get _canNarrow => !isMobile || Get.find<RxBool>().value;
 }
 
-class _Localization extends StatelessWidget {
+class _Localization extends _Toggle<Locale> {
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [...locales.values.map(_toWidget)],
-    );
-  }
+  List<Locale> getValues() => locales.values.toList();
 
-  Widget _toWidget(Locale value) {
+  @override
+  bool isCurrent(Locale value) => value == Get.locale;
+
+  @override
+  Widget toWidget(Locale value) {
     return MaterialButton(
       child: Text(
         value.toString().tr,
-        style: _styleFor(value),
+        style: styleFor(value),
       ),
       onPressed: () => Get.updateLocale(value),
     );
   }
-
-  TextStyle _styleFor(value) {
-    return value == Get.locale ? TextStyle(color: Get.theme.accentColor) : null;
-  }
 }
 
-class _Theming extends StatelessWidget {
+class _Theming extends _Toggle<ThemeMode> {
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [...themes.keys.map(_toWidget)],
-    );
+  List<ThemeMode> getValues() => themes.keys.toList();
+
+  @override
+  bool isCurrent(ThemeMode value) {
+    return (value == ThemeMode.dark) == (Get.isDarkMode);
   }
 
-  Widget _toWidget(ThemeMode value) {
+  @override
+  Widget toWidget(ThemeMode value) {
     return MaterialButton(
       child: Text(
         value.toString().tr,
-        style: _styleFor(value),
+        style: styleFor(value),
       ),
       onPressed: () {
         Get.changeThemeMode(value);
@@ -78,40 +73,50 @@ class _Theming extends StatelessWidget {
       },
     );
   }
+}
 
-  TextStyle _styleFor(ThemeMode value) {
-    return (value == ThemeMode.dark) == (Get.isDarkMode)
-        ? TextStyle(color: Get.theme.accentColor)
-        : null;
+class _Adaptivity extends _Toggle<bool> {
+  final narrowed = Get.find<RxBool>();
+
+  @override
+  List<bool> getValues() => [false, true];
+
+  @override
+  bool isCurrent(bool value) => narrowed.value == value;
+
+  @override
+  Widget toWidget(bool value) {
+    return MaterialButton(
+      child: Text(
+        value ? 'narrowed_on'.tr : 'narrowed_off'.tr,
+        style: styleFor(value),
+      ),
+      onPressed: () => narrowed.value = value,
+    );
   }
 }
 
-class _Adaptivity extends StatelessWidget {
-  final narrowed = Get.find<RxBool>();
-
+abstract class _Toggle<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        ...[false, true].map(_toWidget)
+        ...getValues().map(toWidget),
       ],
     );
   }
 
-  Widget _toWidget(bool value) {
-    return MaterialButton(
-      child: Text(
-        value ? 'narrowed_on'.tr : 'narrowed_off'.tr,
-        style: _styleFor(value),
-      ),
-      onPressed: () => narrowed.value = value,
-    );
-  }
+  @protected
+  List<T> getValues();
 
-  TextStyle _styleFor(bool value) {
-    return narrowed.value == value
-        ? TextStyle(color: Get.theme.accentColor)
-        : null;
+  @protected
+  bool isCurrent(T value);
+
+  @protected
+  Widget toWidget(T value);
+
+  TextStyle styleFor(T value) {
+    return isCurrent(value) ? TextStyle(color: Get.theme.accentColor) : null;
   }
 }
