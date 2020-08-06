@@ -24,7 +24,7 @@ class Home extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FAB(),
       body: Obx(() {
-        _updatePage();
+        _update();
         return Center(
           child: SizedBox(
             width: narrowed.value ? mobileWidth - 200 : double.infinity,
@@ -69,11 +69,19 @@ class Home extends StatelessWidget {
     );
   }
 
-  void _updatePage() {
+  void _update() {
+    var scrollAttached = scroll.positions.isNotEmpty;
+
     if (narrowed.value) {
       scroll.jumpToPage(scroll.page.floor() * 2 + 1);
-    } else if (scroll.positions.isNotEmpty) {
+    } else if (scrollAttached) {
       scroll.jumpToPage((scroll.page / 2).floor());
+    }
+
+    if (scrollAttached) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        Get.find<Scrolling>().setUpdate(); // update next page visible
+      });
     }
   }
 
