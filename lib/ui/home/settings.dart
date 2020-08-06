@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../common.dart';
+import '../constant.dart';
 import '../theme.dart';
 
 class Settings extends StatelessWidget {
+  final bool isMobile;
+
+  Settings({this.isMobile});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -14,76 +19,104 @@ class Settings extends StatelessWidget {
         _Localization(),
         Text('change_theme'.tr, textAlign: TextAlign.center),
         _Theming(),
+        if (_canNarrow) Text('change_display'.tr, textAlign: TextAlign.center),
+        if (_canNarrow) _Adaptivity(),
       ]..addSpacing(),
     );
   }
+
+  bool get _canNarrow => !isMobile || Get.find<RxBool>().value;
 }
 
-class _Localization extends StatelessWidget {
-  final supported = {
-    'English': Locale('en', 'US'),
-    'Русский': Locale('ru', 'RU'),
-  };
+class _Localization extends _Toggle<Locale> {
+  @override
+  List<Locale> getValues() => locales;
 
+  @override
+  bool isCurrent(Locale value) => value == Get.locale;
+
+  @override
+  Widget toWidget(Locale value) {
+    return MaterialButton(
+      child: Text(
+        value == Locale('en', 'US') ? 'English' : 'Русский',
+        style: styleFor(value),
+      ),
+      onPressed: () => Get.updateLocale(value),
+    );
+  }
+}
+
+class _Theming extends _Toggle<ThemeMode> {
+  @override
+  List<ThemeMode> getValues() => themes.keys.toList();
+
+  @override
+  bool isCurrent(ThemeMode value) {
+    return (value == ThemeMode.dark) == (Get.isDarkMode);
+  }
+
+  @override
+  Widget toWidget(ThemeMode value) {
+    return MaterialButton(
+      child: Text(
+        value.toString().tr,
+        style: styleFor(value),
+      ),
+      onPressed: () {
+        Get.changeThemeMode(value);
+        // fix text not updating style/color
+        Future.delayed(
+          Duration(milliseconds: 100),
+          () => Get.updateLocale(Get.locale),
+        );
+      },
+    );
+  }
+}
+
+class _Adaptivity extends _Toggle<bool> {
+  final narrowed = Get.find<RxBool>();
+
+  @override
+  List<bool> getValues() => [false, true];
+
+  @override
+  bool isCurrent(bool value) => narrowed.value == value;
+
+  @override
+  Widget toWidget(bool value) {
+    return MaterialButton(
+      child: Text(
+        value ? 'narrowed_on'.tr : 'narrowed_off'.tr,
+        style: styleFor(value),
+      ),
+      onPressed: () => narrowed.value = value,
+    );
+  }
+}
+
+abstract class _Toggle<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [...supported.map(_toWidget).values],
+      children: [
+        ...getValues().map(toWidget),
+      ],
     );
   }
 
-  MapEntry<String, MaterialButton> _toWidget(key, value) {
-    return MapEntry(
-      key,
-      MaterialButton(
-        child: Text(
-          key,
-          style: _accentActive(value),
-        ),
-        onPressed: () => Get.updateLocale(value),
-      ),
-    );
-  }
+  @protected
+  List<T> getValues();
 
-  TextStyle _accentActive(value) {
-    return value == Get.locale ? TextStyle(color: Get.theme.accentColor) : null;
-  }
-}
+  @protected
+  bool isCurrent(T value);
 
-class _Theming extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [...modes.map(_toWidget).values],
-    );
-  }
+  @protected
+  Widget toWidget(T value);
 
-  MapEntry<String, MaterialButton> _toWidget(String key, ThemeMode value) {
-    return MapEntry(
-      key,
-      MaterialButton(
-        child: Text(
-          key.tr,
-          style: _accentActive(value),
-        ),
-        onPressed: () {
-          Get.changeThemeMode(value);
-          // fix text not updating style/color
-          Future.delayed(
-            Duration(milliseconds: 100),
-            () => Get.updateLocale(Get.locale),
-          );
-        },
-      ),
-    );
-  }
-
-  TextStyle _accentActive(ThemeMode value) {
-    return (value == ThemeMode.dark) ==
-            (Get.theme.brightness == Brightness.dark)
-        ? TextStyle(color: Get.theme.accentColor)
-        : null;
+  TextStyle styleFor(T value) {
+    return isCurrent(value) ? TextStyle(color: Get.theme.accentColor) : null;
   }
 }

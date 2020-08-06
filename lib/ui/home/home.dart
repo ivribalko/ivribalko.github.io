@@ -13,6 +13,7 @@ import 'settings.dart';
 
 class Home extends StatelessWidget {
   final scroll = Get.put(PageController());
+  final narrowed = Get.put(false.obs);
 
   Home() {
     Get.put(Scrolling(scroll));
@@ -22,42 +23,66 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FAB(),
-      body: LayoutBuilder(
-        builder: (context, info) {
-          return Stack(
-            children: [
-              PageView(
-                scrollDirection: Axis.vertical,
-                controller: scroll,
-                pageSnapping: false,
-                children: [
-                  ..._adapted(
-                    About(),
-                    Pic(),
-                    info,
-                    before: Header(),
-                  ),
-                  ..._adapted(
-                    About(),
-                    Settings(),
-                    info,
-                    before: SubHeader(),
-                  ),
-                  ..._adapted(
-                    About(),
-                    Pic(),
-                    info,
-                    before: SubHeader(),
-                    append: Footer(isMobile: info.isMobile),
-                  ),
-                ],
-              ),
-              NextPage(),
-            ],
-          );
-        },
-      ),
+      body: Obx(() {
+        _update();
+        return Center(
+          child: SizedBox(
+            width: narrowed.value ? mobileWidth - 200 : double.infinity,
+            child: LayoutBuilder(
+              builder: (context, info) {
+                return Stack(
+                  children: [
+                    PageView(
+                      scrollDirection: Axis.vertical,
+                      controller: scroll,
+                      pageSnapping: false,
+                      children: [
+                        ..._adapted(
+                          About(),
+                          Pic(),
+                          info,
+                          before: Header(),
+                        ),
+                        ..._adapted(
+                          About(),
+                          Settings(isMobile: info.isSmall),
+                          info,
+                          before: SubHeader(),
+                        ),
+                        ..._adapted(
+                          About(),
+                          Pic(),
+                          info,
+                          before: SubHeader(),
+                          append: Footer(isMobile: info.isSmall),
+                        ),
+                      ],
+                    ),
+                    NextPage(),
+                  ],
+                );
+              },
+            ),
+          ),
+        );
+      }),
     );
+  }
+
+  void _update() {
+    var scrollAttached = scroll.positions.isNotEmpty;
+
+    if (narrowed.value) {
+      scroll.jumpToPage(scroll.page.floor() * 2 + 1);
+    } else if (scrollAttached) {
+      scroll.jumpToPage((scroll.page / 2).floor());
+    }
+
+    if (scrollAttached) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        Get.find<Scrolling>().setUpdate(); // update next page visible
+      });
+    }
   }
 
   List<Widget> _adapted(
@@ -67,7 +92,7 @@ class Home extends StatelessWidget {
     Widget before,
     Widget append,
   }) {
-    if (info.isMobile) {
+    if (info.isSmall) {
       return [
         Column(
           children: [

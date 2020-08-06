@@ -9,16 +9,16 @@ class Scrolling extends GetxController {
   final ScrollController scroll;
 
   Scrolling(this.scroll) {
-    scroll.addListener(_update);
+    scroll.addListener(setUpdate);
   }
 
   @override
   void onClose() {
-    scroll.removeListener(_update);
+    scroll.removeListener(setUpdate);
     super.onClose();
   }
 
-  void _update() {
+  void setUpdate() {
     const diff = 30.0;
     isHeader.value = scroll.offset < diff;
     isFooter.value = scroll.position.maxScrollExtent - scroll.offset < diff;
@@ -35,8 +35,11 @@ extension ListExtensions on List<Widget> {
   }
 }
 
+const double mobileWidth = 700;
+
 extension ConstraintsExtension on BoxConstraints {
-  bool get isMobile => maxWidth < 700 || maxWidth * maxHeight < 400 * 1000;
+  bool get isSmall =>
+      maxWidth < mobileWidth || maxWidth * maxHeight < 400 * 1000;
 }
 
 Widget get padding => const SizedBox(width: kPadding, height: kPadding);
