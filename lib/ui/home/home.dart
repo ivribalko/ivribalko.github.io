@@ -24,9 +24,10 @@ class Home extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FAB(),
       body: Obx(() {
+        _updatePage();
         return Center(
           child: SizedBox(
-            width: narrowed.value ? mobileWidth - 200 : double.maxFinite,
+            width: narrowed.value ? mobileWidth - 200 : double.infinity,
             child: LayoutBuilder(
               builder: (context, info) {
                 return Stack(
@@ -66,6 +67,14 @@ class Home extends StatelessWidget {
         );
       }),
     );
+  }
+
+  void _updatePage() {
+    if (narrowed.value) {
+      scroll.jumpToPage(scroll.page.floor() * 2 + 1);
+    } else if (scroll.positions.isNotEmpty) {
+      scroll.jumpToPage((scroll.page / 2).floor());
+    }
   }
 
   List<Widget> _adapted(
