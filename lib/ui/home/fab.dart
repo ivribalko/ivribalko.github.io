@@ -12,17 +12,30 @@ class FAB extends StatelessWidget {
     return Obx(() {
       return AnimatedOpacity(
         duration: kDuration,
+        curve: kCurve,
         opacity: scrolling.isFooter.value ? 0 : 1,
-        child: scrolling.isHeader.value
-            ? FloatingActionButton.extended(
-                onPressed: mail,
-                label: Text('email_me'.tr),
-                icon: Icon(Icons.email),
-              )
-            : FloatingActionButton(
-                onPressed: mail,
-                child: Icon(Icons.email),
+        child: Padding(
+          padding: EdgeInsets.only(bottom: kPadding),
+          child: FloatingActionButton.extended(
+            onPressed: mail,
+            label: AnimatedCrossFade(
+              duration: kDuration,
+              firstCurve: kCurve,
+              secondCurve: kCurve,
+              sizeCurve: kCurve,
+              firstChild: Row(
+                children: [
+                  Icon(Icons.email),
+                  Text('email_me'.tr),
+                ]..addSpacing(factor: 0.5),
               ),
+              secondChild: Icon(Icons.email),
+              crossFadeState: scrolling.isHeader.value
+                  ? CrossFadeState.showFirst
+                  : CrossFadeState.showSecond,
+            ),
+          ),
+        ),
       );
     });
   }

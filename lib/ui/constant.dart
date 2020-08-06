@@ -4,6 +4,8 @@ const double kPadding = 15;
 
 const Duration kDuration = Duration(milliseconds: 400);
 
+const Cubic kCurve = Curves.easeOutQuad;
+
 const double kFooterHeight = 80;
 
 const double kMaxWidth = 500;

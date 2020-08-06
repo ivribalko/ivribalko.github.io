@@ -17,6 +17,7 @@ class NextPage extends StatelessWidget {
           ignoring: isFooter ? true : false,
           child: AnimatedOpacity(
             duration: kDuration,
+            curve: kCurve,
             opacity: isFooter ? 0 : 1,
             child: Align(
               alignment: Alignment.bottomCenter,
@@ -27,7 +28,7 @@ class NextPage extends StatelessWidget {
                   child: AnimatedContainer(
                     decoration: _buildBoxDecoration(),
                     duration: kDuration,
-                    curve: Curves.easeIn,
+                    curve: kCurve,
                     child: Material(
                       color: Colors.transparent,
                       child: IconButton(
