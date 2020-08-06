@@ -15,7 +15,7 @@ class FAB extends StatelessWidget {
         curve: kCurve,
         opacity: scrolling.isFooter.value ? 0 : 1,
         child: Padding(
-          padding: EdgeInsets.only(bottom: kPadding),
+          padding: EdgeInsets.only(bottom: kPadding / 2),
           child: FloatingActionButton.extended(
             onPressed: mail,
             label: AnimatedCrossFade(

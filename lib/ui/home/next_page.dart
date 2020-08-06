@@ -30,6 +30,7 @@ class NextPage extends StatelessWidget {
                     duration: kDuration,
                     curve: kCurve,
                     child: Material(
+                      type: MaterialType.circle,
                       color: Colors.transparent,
                       child: IconButton(
                         icon: Icon(Icons.arrow_downward),
