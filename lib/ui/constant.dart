@@ -8,7 +8,7 @@ const double kFooterHeight = 80;
 
 const double kMaxWidth = 500;
 
-final locales = {
-  'English': Locale('en', 'US'),
-  'Русский': Locale('ru', 'RU'),
-};
+final locales = [
+  Locale('en', 'US'),
+  Locale('ru', 'RU'),
+];

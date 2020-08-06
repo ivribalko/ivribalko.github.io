@@ -30,7 +30,7 @@ class Settings extends StatelessWidget {
 
 class _Localization extends _Toggle<Locale> {
   @override
-  List<Locale> getValues() => locales.values.toList();
+  List<Locale> getValues() => locales;
 
   @override
   bool isCurrent(Locale value) => value == Get.locale;
@@ -39,7 +39,7 @@ class _Localization extends _Toggle<Locale> {
   Widget toWidget(Locale value) {
     return MaterialButton(
       child: Text(
-        value.toString().tr,
+        value == Locale('en', 'US') ? 'English' : 'Русский',
         style: styleFor(value),
       ),
       onPressed: () => Get.updateLocale(value),

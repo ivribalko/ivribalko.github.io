@@ -12,8 +12,8 @@ const Map<String, String> translationsKeysEn = {
   'change_locale':
       'Changing language is as easy as clicking this button. Try it now:',
   'change_theme': 'Changing themes has never been as fluent:',
-  'dark_theme': 'Dark',
-  'light_theme': 'Light',
+  'ThemeMode.dark': 'Dark',
+  'ThemeMode.light': 'Light',
   'change_display': 'Responsive layout? Yes!',
   'narrowed_off': 'Desktop',
   'narrowed_on': 'Mobile',
@@ -31,8 +31,8 @@ const Map<String, String> translationsKeysRu = {
   'change_locale':
       'Сменить язык так же быстро, как нажать на кнопку. Попробуйте.',
   'change_theme': 'Тёмная и светлая тема? Нет ничего проще:',
-  'dark_theme': 'Тёмная',
-  'light_theme': 'Светлая',
+  'ThemeMode.dark': 'Тёмная',
+  'ThemeMode.light': 'Светлая',
   'change_display': 'Адаптивная вёрстка? Да!',
   'narrowed_off': 'Компьютер',
   'narrowed_on': 'Мобильный',
