@@ -10,10 +10,12 @@ class FAB extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
+      var isHeader = scrolling.isHeader.value;
+      var isFooter = scrolling.isFooter.value;
       return AnimatedOpacity(
         duration: kDuration,
         curve: kCurve,
-        opacity: scrolling.isFooter.value ? 0 : 1,
+        opacity: isFooter ? 0 : 1,
         child: Padding(
           padding: EdgeInsets.only(bottom: kPadding / 2),
           child: FloatingActionButton.extended(
@@ -24,13 +26,14 @@ class FAB extends StatelessWidget {
               secondCurve: kCurve,
               sizeCurve: kCurve,
               firstChild: Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(Icons.email),
-                  Text('email_me'.tr),
+                  if (isHeader) Text('email_me'.tr),
                 ]..addSpacing(factor: 0.5),
               ),
               secondChild: Icon(Icons.email),
-              crossFadeState: scrolling.isHeader.value
+              crossFadeState: isHeader
                   ? CrossFadeState.showFirst
                   : CrossFadeState.showSecond,
             ),
