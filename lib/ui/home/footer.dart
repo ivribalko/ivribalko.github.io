@@ -78,6 +78,8 @@ class _FooterButton extends StatelessWidget {
         height: isFooter ? 42 : 0,
         duration: kDuration * 2,
         curve: Curves.bounceOut,
+        transform: Matrix4.identity()
+          ..rotateZ(isFooter ? 0 : 0.3 * (index + 1)),
         child: IconButton(
           icon: Icon(icon),
           onPressed: () => launch(address),
