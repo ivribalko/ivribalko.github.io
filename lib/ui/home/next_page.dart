@@ -16,7 +16,7 @@ class NextPage extends StatelessWidget {
         return IgnorePointer(
           ignoring: isFooter ? true : false,
           child: AnimatedOpacity(
-            duration: kDuration,
+            duration: kDuration * 2,
             curve: kCurve,
             opacity: isFooter ? 0 : 1,
             child: Align(
@@ -27,7 +27,7 @@ class NextPage extends StatelessWidget {
                   height: kFooterHeight,
                   child: AnimatedContainer(
                     decoration: _buildBoxDecoration(),
-                    duration: kDuration,
+                    duration: kDuration * 2,
                     curve: kCurve,
                     child: Material(
                       type: MaterialType.circle,
@@ -53,21 +53,18 @@ class NextPage extends StatelessWidget {
 
   BoxDecoration _buildBoxDecoration() {
     var isHeader = scrolling.isHeader.value;
+    var isFooter = scrolling.isFooter.value;
+    var hiding = isHeader || isFooter;
     return BoxDecoration(
-      color: Get.theme.scaffoldBackgroundColor,
-      borderRadius: BorderRadius.all(Radius.circular(
-        isHeader ? 0 : 45,
-      )),
-      boxShadow: [
-        BoxShadow(
-          color: isHeader ? Colors.transparent : Get.theme.accentColor,
-          offset: Offset(0, 3),
+      border: Border.all(
+        color: hiding ? Colors.transparent : Get.theme.accentColor,
+        width: 2,
+      ),
+      borderRadius: BorderRadius.all(
+        Radius.circular(
+          hiding ? 0 : 45,
         ),
-        BoxShadow(
-          color: isHeader ? Colors.transparent : Get.theme.accentColor,
-          offset: Offset(0, -2),
-        ),
-      ],
+      ),
     );
   }
 }
