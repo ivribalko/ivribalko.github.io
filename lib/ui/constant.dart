@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 const double kPadding = 15;
 
-const Duration kDuration = Duration(milliseconds: 400);
+const Duration kDuration = Duration(milliseconds: 500);
 
 const Cubic kCurve = Curves.easeOutQuad;
 

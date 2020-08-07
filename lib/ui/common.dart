@@ -35,6 +35,25 @@ extension ListExtensions on List<Widget> {
       insert(i, SizedBox(width: size, height: size));
     }
   }
+
+  void addAppear(Scrolling scrolling, PageController scroll) {
+    for (var i = length - 1; i >= 0; i--) {
+      var child = this[i];
+      this[i] = Obx(
+        () {
+          if (scroll.positions.isEmpty) {
+            return child;
+          } else {
+            var _ = scrolling.offset.value;
+            return Opacity(
+              opacity: (1.2 - (i - scroll.page).abs()).clamp(0, 1),
+              child: child,
+            );
+          }
+        },
+      );
+    }
+  }
 }
 
 const double mobileWidth = 700;
