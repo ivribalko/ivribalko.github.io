@@ -17,14 +17,17 @@ class Footer extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         _FooterButton(
+          index: 0,
           icon: MdiIcons.linkedin,
           address: 'https://www.linkedin.com/in/ivan-rybalko-38b92a151/',
         ),
         _FooterButton(
+          index: 1,
           icon: MdiIcons.telegram,
           address: 'https://t.me/whitepyjamas',
         ),
         _FooterButton(
+          index: 2,
           icon: MdiIcons.github,
           address: 'https://github.com/whitepyjamas',
         ),
@@ -55,20 +58,31 @@ class Footer extends StatelessWidget {
 }
 
 class _FooterButton extends StatelessWidget {
+  final int index;
   final IconData icon;
   final String address;
+  final scrolling = Get.find<Scrolling>();
 
-  const _FooterButton({
+  _FooterButton({
     Key key,
+    this.index,
     this.icon,
     this.address,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(icon),
-      onPressed: () => launch(address),
-    );
+    return Obx(() {
+      var isFooter = scrolling.isFooter.value;
+      return AnimatedContainer(
+        height: isFooter ? 42 : 0,
+        duration: kDuration * 2,
+        curve: Curves.bounceOut,
+        child: IconButton(
+          icon: Icon(icon),
+          onPressed: () => launch(address),
+        ),
+      );
+    });
   }
 }
