@@ -16,18 +16,17 @@ class Footer extends StatelessWidget {
     Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        IconButton(
-          icon: Icon(MdiIcons.linkedin),
-          onPressed: () =>
-              launch('https://www.linkedin.com/in/ivan-rybalko-38b92a151/'),
+        _FooterButton(
+          icon: MdiIcons.linkedin,
+          address: 'https://www.linkedin.com/in/ivan-rybalko-38b92a151/',
         ),
-        IconButton(
-          icon: Icon(MdiIcons.telegram),
-          onPressed: () => launch('https://t.me/whitepyjamas'),
+        _FooterButton(
+          icon: MdiIcons.telegram,
+          address: 'https://t.me/whitepyjamas',
         ),
-        IconButton(
-          icon: Icon(MdiIcons.github),
-          onPressed: () => launch('https://github.com/whitepyjamas'),
+        _FooterButton(
+          icon: MdiIcons.github,
+          address: 'https://github.com/whitepyjamas',
         ),
       ],
     ),
@@ -52,5 +51,24 @@ class Footer extends StatelessWidget {
         ),
       );
     }
+  }
+}
+
+class _FooterButton extends StatelessWidget {
+  final IconData icon;
+  final String address;
+
+  const _FooterButton({
+    Key key,
+    this.icon,
+    this.address,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(icon),
+      onPressed: () => launch(address),
+    );
   }
 }
