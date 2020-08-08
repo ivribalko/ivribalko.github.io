@@ -26,7 +26,7 @@ class Scrolling extends GetxController {
   }
 
   void _update() {
-    const diff = kFooterHeight;
+    const diff = kFooterHeight + 50;
     offset.value = scroll.offset;
     isHeader.value = scroll.offset < diff;
     isFooter.value = scroll.position.maxScrollExtent - scroll.offset < diff;
