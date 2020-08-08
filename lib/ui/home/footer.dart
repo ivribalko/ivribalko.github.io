@@ -13,29 +13,46 @@ class Footer extends StatelessWidget {
       height: Get.theme.buttonTheme.height,
       child: Center(child: Text('© ${'ivan_rybalko'.tr}, 2020')),
     ),
-    Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        IconButton(
-          icon: Icon(MdiIcons.linkedin),
-          onPressed: () =>
-              launch('https://www.linkedin.com/in/ivan-rybalko-38b92a151/'),
-        ),
-        IconButton(
-          icon: Icon(MdiIcons.telegram),
-          onPressed: () => launch('https://t.me/whitepyjamas'),
-        ),
-        IconButton(
-          icon: Icon(MdiIcons.github),
-          onPressed: () => launch('https://github.com/whitepyjamas'),
-        ),
-      ],
+    Obx(
+      () {
+        var isFooter = Get.find<Scrolling>().isFooter.value;
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _FooterButton(
+              index: 0,
+              icon: MdiIcons.linkedin,
+              address: 'https://www.linkedin.com/in/ivan-rybalko-38b92a151/',
+            ),
+            _animatedPadding(isFooter),
+            _FooterButton(
+              index: 1,
+              icon: MdiIcons.telegram,
+              address: 'https://t.me/whitepyjamas',
+            ),
+            _animatedPadding(isFooter),
+            _FooterButton(
+              index: 2,
+              icon: MdiIcons.github,
+              address: 'https://github.com/whitepyjamas',
+            ),
+          ],
+        );
+      },
     ),
     MaterialButton(
       onPressed: mail,
       child: Text('ivan@rybalko.dev'),
     ),
   ];
+
+  static Widget _animatedPadding(bool isFooter) {
+    return AnimatedContainer(
+      width: isFooter ? 0 : 50,
+      duration: isFooter ? kDuration : Duration(milliseconds: 0),
+      curve: Curves.bounceOut,
+    );
+  }
 
   Footer({this.isMobile});
 
@@ -52,5 +69,26 @@ class Footer extends StatelessWidget {
         ),
       );
     }
+  }
+}
+
+class _FooterButton extends StatelessWidget {
+  final int index;
+  final IconData icon;
+  final String address;
+
+  _FooterButton({
+    Key key,
+    this.index,
+    this.icon,
+    this.address,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(icon),
+      onPressed: () => launch(address),
+    );
   }
 }
