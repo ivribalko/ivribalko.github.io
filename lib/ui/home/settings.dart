@@ -38,11 +38,11 @@ class _Localization extends _Toggle<Locale> {
   @override
   Widget toWidget(Locale value) {
     return MaterialButton(
+      onPressed: () => Get.updateLocale(value),
       child: Text(
         value == Locale('en', 'US') ? 'English' : 'Русский',
         style: styleFor(value),
       ),
-      onPressed: () => Get.updateLocale(value),
     );
   }
 }
@@ -59,13 +59,22 @@ class _Theming extends _Toggle<ThemeMode> {
   @override
   Widget toWidget(ThemeMode value) {
     return MaterialButton(
+      onPressed: () {
+        Get.changeThemeMode(value);
+        _fixUpdating();
+      },
       child: Text(
         value.toString().tr,
         style: styleFor(value),
       ),
-      onPressed: () {
-        Get.changeThemeMode(value);
-        // fix text not updating style/color
+    );
+  }
+
+  Future<dynamic> _fixUpdating() {
+    return Future.delayed(
+      Duration(milliseconds: 100),
+      () {
+        Get.updateLocale(Get.locale);
         Future.delayed(
           Duration(milliseconds: 100),
           () => Get.updateLocale(Get.locale),
@@ -87,11 +96,11 @@ class _Adaptivity extends _Toggle<bool> {
   @override
   Widget toWidget(bool value) {
     return MaterialButton(
+      onPressed: () => narrowed.value = value,
       child: Text(
         value ? 'narrowed_on'.tr : 'narrowed_off'.tr,
         style: styleFor(value),
       ),
-      onPressed: () => narrowed.value = value,
     );
   }
 }
