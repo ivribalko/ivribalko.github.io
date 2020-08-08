@@ -4,7 +4,7 @@ import 'package:rybalko_dev/ui/constant.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Scrolling extends GetxController {
-  final page = 0.0.obs;
+  final page = 0.obs;
   final offset = 0.0.obs;
   final isHeader = true.obs;
   final isFooter = false.obs;
@@ -28,7 +28,7 @@ class Scrolling extends GetxController {
 
   void _update() {
     const diff = kFooterHeight + 50;
-    page.value = scroll.page;
+    page.value = scroll.page.round();
     offset.value = scroll.offset;
     isHeader.value = scroll.offset < diff;
     isFooter.value = scroll.position.maxScrollExtent - scroll.offset < diff;

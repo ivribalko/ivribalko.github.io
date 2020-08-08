@@ -5,6 +5,7 @@ import '../common.dart';
 import '../constant.dart';
 import '../stack.dart';
 import 'about.dart';
+import 'animated_text.dart';
 import 'fab.dart';
 import 'footer.dart';
 import 'header.dart';
@@ -12,11 +13,11 @@ import 'next_page.dart';
 import 'pic.dart';
 import 'settings.dart';
 
-class Home extends StatelessWidget {
+class Screen extends StatelessWidget {
   final scroll = Get.put(PageController());
   final narrowed = Get.put(false.obs);
 
-  Home() {
+  Screen() {
     Get.put(Scrolling(scroll));
     ever(narrowed, _update);
   }
@@ -48,19 +49,18 @@ class Home extends StatelessWidget {
                           About(),
                           Settings(isMobile: info.isSmall),
                           info,
-                          before: SubHeader(),
                         ),
                         ..._adapted(
                           About(),
                           Pic(),
                           info,
-                          before: SubHeader(),
                           append: Footer(isMobile: info.isSmall),
                         ),
                       ],
                     ),
                     _Fader(Alignment.topCenter),
                     _Fader(Alignment.bottomCenter),
+                    _Title(),
                     NextPage(),
                   ],
                 );
@@ -170,5 +170,29 @@ class _Fader extends StatelessWidget {
         ),
       );
     });
+  }
+}
+
+class _Title extends StatelessWidget {
+  final scrolling = Get.find<Scrolling>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(top: kPadding * 2),
+      child: Obx(() {
+        return AnimatedText(
+          index: scrolling.page.value,
+          items: [
+            '',
+            'here is a title',
+            'a short one',
+            'and max width is this',
+            'ending soon',
+            'end',
+          ],
+        );
+      }),
+    );
   }
 }

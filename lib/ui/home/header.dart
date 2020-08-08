@@ -32,20 +32,6 @@ class Header extends StatelessWidget {
   }
 }
 
-class SubHeader extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: kFooterHeight,
-      child: Text(
-        'kDummyShort'.tr.toUpperCase(),
-        textAlign: TextAlign.center,
-        style: Get.textTheme.headline4,
-      ),
-    );
-  }
-}
-
 class _Image extends StatefulWidget {
   @override
   _ImageState createState() => _ImageState();
