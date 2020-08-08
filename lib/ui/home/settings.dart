@@ -65,7 +65,16 @@ class _Theming extends _Toggle<ThemeMode> {
       ),
       onPressed: () {
         Get.changeThemeMode(value);
-        // fix text not updating style/color
+        _fixUpdating();
+      },
+    );
+  }
+
+  Future<dynamic> _fixUpdating() {
+    return Future.delayed(
+      Duration(milliseconds: 100),
+      () {
+        Get.updateLocale(Get.locale);
         Future.delayed(
           Duration(milliseconds: 100),
           () => Get.updateLocale(Get.locale),
