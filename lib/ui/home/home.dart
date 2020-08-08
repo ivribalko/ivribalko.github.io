@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../common.dart';
 import '../constant.dart';
+import '../stack.dart';
 import 'about.dart';
 import 'fab.dart';
 import 'footer.dart';
@@ -30,7 +31,7 @@ class Home extends StatelessWidget {
             width: narrowed.value ? mobileWidth - 200 : double.infinity,
             child: LayoutBuilder(
               builder: (context, info) {
-                return Stack(
+                return StackWithAllChildrenReceiveEvents(
                   children: [
                     PageView(
                       scrollDirection: Axis.vertical,
@@ -56,8 +57,10 @@ class Home extends StatelessWidget {
                           before: SubHeader(),
                           append: Footer(isMobile: info.isSmall),
                         ),
-                      ]..addAppear(Get.find<Scrolling>()),
+                      ],
                     ),
+                    _Fader(Alignment.topCenter),
+                    _Fader(Alignment.bottomCenter),
                     NextPage(),
                   ],
                 );
@@ -134,5 +137,38 @@ class Home extends StatelessWidget {
         )
       ];
     }
+  }
+}
+
+class _Fader extends StatelessWidget {
+  final Alignment alignment;
+  final scrolling = Get.find<Scrolling>();
+
+  _Fader(this.alignment);
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      var isMiddle = !scrolling.isHeader.value && !scrolling.isFooter.value;
+      return Align(
+        alignment: alignment,
+        child: AnimatedContainer(
+          duration: kDuration,
+          curve: kCurve,
+          height: isMiddle ? Get.height * 0.10 : 0,
+          width: double.maxFinite,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: alignment,
+              end: Alignment(-1 * alignment.x, -1 * alignment.y),
+              colors: [
+                Get.theme.scaffoldBackgroundColor,
+                Get.theme.scaffoldBackgroundColor.withOpacity(0),
+              ],
+            ),
+          ),
+        ),
+      );
+    });
   }
 }
