@@ -17,6 +17,7 @@ class Home extends StatelessWidget {
 
   Home() {
     Get.put(Scrolling(scroll));
+    ever(narrowed, _update);
   }
 
   @override
@@ -24,7 +25,6 @@ class Home extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FAB(),
       body: Obx(() {
-        _update();
         return Center(
           child: SizedBox(
             width: narrowed.value ? mobileWidth - 200 : double.infinity,
@@ -56,7 +56,7 @@ class Home extends StatelessWidget {
                           before: SubHeader(),
                           append: Footer(isMobile: info.isSmall),
                         ),
-                      ],
+                      ]..addAppear(Get.find<Scrolling>(), scroll),
                     ),
                     NextPage(),
                   ],
@@ -69,20 +69,16 @@ class Home extends StatelessWidget {
     );
   }
 
-  void _update() {
-    var scrollAttached = scroll.positions.isNotEmpty;
-
-    if (narrowed.value) {
-      scroll.jumpToPage(scroll.page.floor() * 2 + 1);
-    } else if (scrollAttached) {
+  dynamic _update(dynamic narrowed) {
+    if (narrowed) {
+      scroll.jumpToPage(scroll.page.round() * 2 + 1);
+    } else {
       scroll.jumpToPage((scroll.page / 2).floor());
     }
 
-    if (scrollAttached) {
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        Get.find<Scrolling>().setUpdate(); // update next page visible
-      });
-    }
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Get.find<Scrolling>().forceUpdate(); // update next page visible
+    });
   }
 
   List<Widget> _adapted(

@@ -4,22 +4,30 @@ import 'package:rybalko_dev/ui/constant.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Scrolling extends GetxController {
+  final offset = 0.0.obs;
   final isHeader = true.obs;
   final isFooter = false.obs;
   final ScrollController scroll;
 
   Scrolling(this.scroll) {
-    scroll.addListener(setUpdate);
+    scroll.addListener(_update);
   }
 
   @override
   void onClose() {
-    scroll.removeListener(setUpdate);
+    scroll.removeListener(_update);
     super.onClose();
   }
 
-  void setUpdate() {
-    const diff = 30.0;
+  void forceUpdate() {
+    offset.value -= 1;
+    offset.value += 1;
+    _update();
+  }
+
+  void _update() {
+    const diff = kFooterHeight + 50;
+    offset.value = scroll.offset;
     isHeader.value = scroll.offset < diff;
     isFooter.value = scroll.position.maxScrollExtent - scroll.offset < diff;
     update();
@@ -33,13 +41,31 @@ extension ListExtensions on List<Widget> {
       insert(i, SizedBox(width: size, height: size));
     }
   }
+
+  void addAppear(Scrolling scrolling, PageController scroll) {
+    for (var i = length - 1; i >= 0; i--) {
+      var child = this[i];
+      this[i] = Obx(() {
+        if (scroll.positions.isEmpty) {
+          return child;
+        } else {
+          var _ = scrolling.offset.value;
+          return Opacity(
+            opacity: (1.2 - (i - scroll.page).abs()).clamp(0, 1),
+            child: child,
+          );
+        }
+      });
+    }
+  }
 }
 
 const double mobileWidth = 700;
 
 extension ConstraintsExtension on BoxConstraints {
-  bool get isSmall =>
-      maxWidth < mobileWidth || maxWidth * maxHeight < 400 * 1000;
+  bool get isSmall {
+    return maxWidth < mobileWidth || maxWidth * maxHeight < 400 * 1000;
+  }
 }
 
 Widget get padding => const SizedBox(width: kPadding, height: kPadding);
