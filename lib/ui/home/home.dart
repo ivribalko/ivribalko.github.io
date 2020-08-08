@@ -56,7 +56,7 @@ class Home extends StatelessWidget {
                           before: SubHeader(),
                           append: Footer(isMobile: info.isSmall),
                         ),
-                      ]..addAppear(Get.find<Scrolling>(), scroll),
+                      ]..addAppear(Get.find<Scrolling>()),
                     ),
                     NextPage(),
                   ],
