@@ -43,7 +43,10 @@ class Footer extends StatelessWidget {
     ),
     MaterialButton(
       onPressed: mail,
-      child: Text('ivan@rybalko.dev'),
+      child: Text(
+        'ivan@rybalko.dev',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
     ),
   ];
 
