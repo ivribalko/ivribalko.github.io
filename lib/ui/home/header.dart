@@ -68,6 +68,12 @@ class _ImageState extends State<_Image> with SingleTickerProviderStateMixin {
   }
 
   @override
+  void dispose() {
+    turns.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
