@@ -4,10 +4,11 @@ import 'package:rybalko_dev/ui/constant.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Scrolling extends GetxController {
+  final page = 0.obs;
   final offset = 0.0.obs;
   final isHeader = true.obs;
   final isFooter = false.obs;
-  final ScrollController scroll;
+  final PageController scroll;
 
   Scrolling(this.scroll) {
     scroll.addListener(_update);
@@ -27,6 +28,7 @@ class Scrolling extends GetxController {
 
   void _update() {
     const diff = kFooterHeight + 50;
+    page.value = scroll.page.round();
     offset.value = scroll.offset;
     isHeader.value = scroll.offset < diff;
     isFooter.value = scroll.position.maxScrollExtent - scroll.offset < diff;
@@ -42,19 +44,14 @@ extension ListExtensions on List<Widget> {
     }
   }
 
-  void addAppear(Scrolling scrolling, PageController scroll) {
+  void addAppear(Scrolling scrolling) {
     for (var i = length - 1; i >= 0; i--) {
       var child = this[i];
       this[i] = Obx(() {
-        if (scroll.positions.isEmpty) {
-          return child;
-        } else {
-          var _ = scrolling.offset.value;
-          return Opacity(
-            opacity: (1.2 - (i - scroll.page).abs()).clamp(0, 1),
-            child: child,
-          );
-        }
+        return Opacity(
+          opacity: (1.2 - (i - scrolling.page.value).abs()).clamp(0, 1),
+          child: child,
+        );
       });
     }
   }

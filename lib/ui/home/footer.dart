@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -7,7 +8,7 @@ import '../common.dart';
 import '../constant.dart';
 
 class Footer extends StatelessWidget {
-  final isMobile;
+  final isSmall;
   final children = [
     SizedBox(
       height: Get.theme.buttonTheme.height,
@@ -42,7 +43,10 @@ class Footer extends StatelessWidget {
     ),
     MaterialButton(
       onPressed: mail,
-      child: Text('ivan@rybalko.dev'),
+      child: Text(
+        'ivan@rybalko.dev',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
     ),
   ];
 
@@ -54,15 +58,15 @@ class Footer extends StatelessWidget {
     );
   }
 
-  Footer({this.isMobile});
+  Footer({this.isSmall});
 
   @override
   Widget build(BuildContext context) {
-    if (isMobile) {
+    if (isSmall) {
       return Column(children: children);
     } else {
       return SizedBox(
-        height: kFooterHeight / 2,
+        height: kFooterHeight,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: children,
@@ -76,6 +80,8 @@ class _FooterButton extends StatelessWidget {
   final int index;
   final IconData icon;
   final String address;
+  final RxBool entered = false.obs;
+  static const double size = kFooterHeight;
 
   _FooterButton({
     Key key,
@@ -86,9 +92,50 @@ class _FooterButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(icon),
-      onPressed: () => launch(address),
+    return MouseRegion(
+      onEnter: (_) => entered.value = true,
+      onExit: (_) => entered.value = false,
+      child: SizedBox(
+        width: size,
+        height: size,
+        child: Stack(
+          children: [
+            Center(child: _HoverBack(entered)),
+            Center(
+              child: IconButton(
+                icon: Icon(icon),
+                hoverColor: Colors.transparent,
+                onPressed: () => launch(address),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _HoverBack extends StatelessWidget {
+  final RxBool entered;
+
+  const _HoverBack(this.entered);
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () {
+        var value = entered.value;
+        return ClipPath(
+          clipper: StarClipper(8),
+          child: AnimatedContainer(
+            height: value ? _FooterButton.size : 0,
+            width: value ? _FooterButton.size : 0,
+            color: Get.theme.accentColor,
+            duration: kDuration,
+            curve: kCurve,
+          ),
+        );
+      },
     );
   }
 }

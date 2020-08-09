@@ -6,9 +6,9 @@ import '../constant.dart';
 import '../theme.dart';
 
 class Settings extends StatelessWidget {
-  final bool isMobile;
+  final bool isSmall;
 
-  Settings({this.isMobile});
+  Settings({this.isSmall});
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +20,12 @@ class Settings extends StatelessWidget {
         Text('change_theme'.tr, textAlign: TextAlign.center),
         _Theming(),
         if (_canNarrow) Text('change_display'.tr, textAlign: TextAlign.center),
-        if (_canNarrow) _Adaptivity(),
+        if (_canNarrow) _Responsiveness(),
       ]..addSpacing(),
     );
   }
 
-  bool get _canNarrow => !isMobile || Get.find<RxBool>().value;
+  bool get _canNarrow => !isSmall || Get.find<RxBool>().value;
 }
 
 class _Localization extends _Toggle<Locale> {
@@ -38,11 +38,11 @@ class _Localization extends _Toggle<Locale> {
   @override
   Widget toWidget(Locale value) {
     return MaterialButton(
+      onPressed: () => Get.updateLocale(value),
       child: Text(
         value == Locale('en', 'US') ? 'English' : 'Русский',
         style: styleFor(value),
       ),
-      onPressed: () => Get.updateLocale(value),
     );
   }
 }
@@ -59,13 +59,22 @@ class _Theming extends _Toggle<ThemeMode> {
   @override
   Widget toWidget(ThemeMode value) {
     return MaterialButton(
+      onPressed: () {
+        Get.changeThemeMode(value);
+        _fixUpdating();
+      },
       child: Text(
         value.toString().tr,
         style: styleFor(value),
       ),
-      onPressed: () {
-        Get.changeThemeMode(value);
-        // fix text not updating style/color
+    );
+  }
+
+  Future<dynamic> _fixUpdating() {
+    return Future.delayed(
+      Duration(milliseconds: 100),
+      () {
+        Get.updateLocale(Get.locale);
         Future.delayed(
           Duration(milliseconds: 100),
           () => Get.updateLocale(Get.locale),
@@ -75,7 +84,7 @@ class _Theming extends _Toggle<ThemeMode> {
   }
 }
 
-class _Adaptivity extends _Toggle<bool> {
+class _Responsiveness extends _Toggle<bool> {
   final narrowed = Get.find<RxBool>();
 
   @override
@@ -87,11 +96,11 @@ class _Adaptivity extends _Toggle<bool> {
   @override
   Widget toWidget(bool value) {
     return MaterialButton(
+      onPressed: () => narrowed.value = value,
       child: Text(
         value ? 'narrowed_on'.tr : 'narrowed_off'.tr,
         style: styleFor(value),
       ),
-      onPressed: () => narrowed.value = value,
     );
   }
 }
