@@ -16,6 +16,13 @@ import 'settings.dart';
 class Screen extends StatelessWidget {
   final scroll = Get.put(PageController());
   final narrowed = Get.put(false.obs);
+  final pages = Get.put(
+    <String, dynamic>{
+      'page_title_hello': _buildHello,
+      'page_title_settings': _buildSettings,
+      'page_title_goodbye': _buildGoodbye,
+    },
+  );
 
   Screen() {
     Get.put(Scrolling(scroll));
@@ -39,24 +46,9 @@ class Screen extends StatelessWidget {
                       controller: scroll,
                       pageSnapping: false,
                       children: [
-                        ..._adapted(
-                          About(),
-                          Pic(),
-                          info,
-                          before: Header(),
-                        ),
-                        ..._adapted(
-                          About(),
-                          Settings(isMobile: info.isSmall),
-                          info,
-                          before: SizedBox(height: _Title.height),
-                        ),
-                        ..._adapted(
-                          About(),
-                          Pic(),
-                          info,
-                          before: SizedBox(height: _Title.height),
-                          append: Footer(isMobile: info.isSmall),
+                        ...pages.values.map((e) => e.call(info)).fold(
+                          [],
+                          (result, element) => result.followedBy(element),
                         ),
                       ],
                     ),
@@ -74,6 +66,34 @@ class Screen extends StatelessWidget {
     );
   }
 
+  static List<Widget> _buildHello(BoxConstraints info) {
+    return _adapted(
+      About(),
+      Pic(),
+      info,
+      before: Header(),
+    );
+  }
+
+  static List<Widget> _buildSettings(BoxConstraints info) {
+    return _adapted(
+      About(),
+      Settings(isMobile: info.isSmall),
+      info,
+      before: SizedBox(height: _Title.height),
+    );
+  }
+
+  static List<Widget> _buildGoodbye(BoxConstraints info) {
+    return _adapted(
+      About(),
+      Pic(),
+      info,
+      before: SizedBox(height: _Title.height),
+      append: Footer(isMobile: info.isSmall),
+    );
+  }
+
   dynamic _update(dynamic narrowed) {
     if (narrowed) {
       scroll.jumpToPage(scroll.page.round() * 2 + 1);
@@ -84,61 +104,6 @@ class Screen extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Get.find<Scrolling>().forceUpdate(); // update next page visible
     });
-  }
-
-  List<Widget> _adapted(
-    Widget one,
-    Widget two,
-    BoxConstraints info, {
-    Widget before,
-    Widget append,
-  }) {
-    if (info.isSmall) {
-      return [
-        Column(
-          children: [
-            if (before != null) padded(child: before),
-            Flexible(child: padded(child: one)),
-            padded(),
-          ],
-        ),
-        Column(
-          children: [
-            Flexible(child: padded(child: two)),
-            if (append != null) padded(child: append),
-          ],
-        ),
-      ];
-    } else {
-      return [
-        Column(
-          children: [
-            if (before != null) padded(child: before),
-            Flexible(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(maxWidth: kMaxWidth),
-                      child: padded(child: one),
-                    ),
-                  ),
-                  Flexible(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(maxWidth: kMaxWidth),
-                      child: padded(child: two),
-                    ),
-                  ),
-                ]..addSpacing(),
-              ),
-            ),
-            SizedBox(height: kFooterHeight),
-            if (append != null) padded(child: append)
-          ]..addSpacing(),
-        )
-      ];
-    }
   }
 }
 
@@ -179,6 +144,7 @@ class _Title extends StatelessWidget {
   static const double height = kFooterHeight;
 
   final scrolling = Get.find<Scrolling>();
+  final pages = Get.find<Map<String, dynamic>>();
 
   @override
   Widget build(BuildContext context) {
@@ -190,14 +156,65 @@ class _Title extends StatelessWidget {
           alignment: Alignment.topCenter,
           child: AnimatedText(
             index: (scrolling.page.value / (narrowed ? 2 : 1)).floor(),
-            items: [
-              'here is a title',
-              'a short one',
-              'and max width is this',
-            ],
+            items: pages.keys.toList(),
           ),
         );
       }),
     );
+  }
+}
+
+List<Widget> _adapted(
+  Widget one,
+  Widget two,
+  BoxConstraints info, {
+  Widget before,
+  Widget append,
+}) {
+  if (info.isSmall) {
+    return [
+      Column(
+        children: [
+          if (before != null) padded(child: before),
+          Flexible(child: padded(child: one)),
+          padded(),
+        ],
+      ),
+      Column(
+        children: [
+          Flexible(child: padded(child: two)),
+          if (append != null) padded(child: append),
+        ],
+      ),
+    ];
+  } else {
+    return [
+      Column(
+        children: [
+          if (before != null) padded(child: before),
+          Flexible(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Flexible(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: kMaxWidth),
+                    child: padded(child: one),
+                  ),
+                ),
+                Flexible(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: kMaxWidth),
+                    child: padded(child: two),
+                  ),
+                ),
+              ]..addSpacing(),
+            ),
+          ),
+          SizedBox(height: kFooterHeight),
+          if (append != null) padded(child: append)
+        ]..addSpacing(),
+      )
+    ];
   }
 }
