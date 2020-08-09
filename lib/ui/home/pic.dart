@@ -9,9 +9,9 @@ class Pic extends StatelessWidget {
         children: <Widget>[
           Center(child: CircularProgressIndicator()),
           Center(
-            child: FadeInImage.memoryNetwork(
-              placeholder: kTransparentImage,
-              image: 'assets/vga.png',
+            child: FadeInImage(
+              placeholder: MemoryImage(kTransparentImage),
+              image: AssetImage('assets/vga.png'),
             ),
           ),
         ],
