@@ -176,7 +176,7 @@ class _Fader extends StatelessWidget {
 }
 
 class _Title extends StatelessWidget {
-  static const double height = 100;
+  static const double height = kFooterHeight;
 
   final scrolling = Get.find<Scrolling>();
 
@@ -185,17 +185,15 @@ class _Title extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(top: kPadding * 2),
       child: Obx(() {
+        var narrowed = Get.find<RxBool>().value;
         return Align(
           alignment: Alignment.topCenter,
           child: AnimatedText(
-            index: scrolling.page.value,
+            index: (scrolling.page.value / (narrowed ? 2 : 1)).floor(),
             items: [
-              '',
               'here is a title',
               'a short one',
               'and max width is this',
-              'ending soon',
-              'end',
             ],
           ),
         );
