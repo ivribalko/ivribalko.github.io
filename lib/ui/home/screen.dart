@@ -66,7 +66,7 @@ class Screen extends StatelessWidget {
   }
 
   static List<Widget> _buildHello(BoxConstraints info) {
-    return _adapted(
+    return _responsive(
       About(),
       Pic(),
       info,
@@ -75,7 +75,7 @@ class Screen extends StatelessWidget {
   }
 
   static List<Widget> _buildSettings(BoxConstraints info) {
-    return _adapted(
+    return _responsive(
       About(),
       Settings(isSmall: info.isSmall),
       info,
@@ -84,7 +84,7 @@ class Screen extends StatelessWidget {
   }
 
   static List<Widget> _buildGoodbye(BoxConstraints info) {
-    return _adapted(
+    return _responsive(
       About(),
       Pic(),
       info,
@@ -165,7 +165,7 @@ class _Title extends StatelessWidget {
   }
 }
 
-List<Widget> _adapted(
+List<Widget> _responsive(
   Widget one,
   Widget two,
   BoxConstraints info, {
