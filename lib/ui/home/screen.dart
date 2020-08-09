@@ -49,11 +49,13 @@ class Screen extends StatelessWidget {
                           About(),
                           Settings(isMobile: info.isSmall),
                           info,
+                          before: SizedBox(height: _Title.height),
                         ),
                         ..._adapted(
                           About(),
                           Pic(),
                           info,
+                          before: SizedBox(height: _Title.height),
                           append: Footer(isMobile: info.isSmall),
                         ),
                       ],
@@ -174,6 +176,8 @@ class _Fader extends StatelessWidget {
 }
 
 class _Title extends StatelessWidget {
+  static const double height = 100;
+
   final scrolling = Get.find<Scrolling>();
 
   @override
