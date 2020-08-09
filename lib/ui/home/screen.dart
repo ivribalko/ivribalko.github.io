@@ -8,7 +8,6 @@ import 'about.dart';
 import 'animated_text.dart';
 import 'fab.dart';
 import 'footer.dart';
-import 'header.dart';
 import 'next_page.dart';
 import 'pic.dart';
 import 'settings.dart';
@@ -71,7 +70,7 @@ class Screen extends StatelessWidget {
       About(),
       Pic(),
       info,
-      before: Header(),
+      before: SizedBox(height: _Title.height),
     );
   }
 
