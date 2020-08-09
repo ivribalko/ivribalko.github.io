@@ -181,16 +181,19 @@ class _Title extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(top: kPadding * 2),
       child: Obx(() {
-        return AnimatedText(
-          index: scrolling.page.value,
-          items: [
-            '',
-            'here is a title',
-            'a short one',
-            'and max width is this',
-            'ending soon',
-            'end',
-          ],
+        return Align(
+          alignment: Alignment.topCenter,
+          child: AnimatedText(
+            index: scrolling.page.value,
+            items: [
+              '',
+              'here is a title',
+              'a short one',
+              'and max width is this',
+              'ending soon',
+              'end',
+            ],
+          ),
         );
       }),
     );

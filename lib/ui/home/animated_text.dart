@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class AnimatedText extends StatelessWidget {
+class AnimatedText extends StatefulWidget {
   final int index;
   final List<String> items;
 
@@ -10,7 +11,15 @@ class AnimatedText extends StatelessWidget {
   });
 
   @override
+  _AnimatedTextState createState() => _AnimatedTextState();
+}
+
+class _AnimatedTextState extends State<AnimatedText> {
+  @override
   Widget build(BuildContext context) {
-    return Text(items[index]);
+    return Text(
+      widget.items[widget.index],
+      style: Get.textTheme.headline4,
+    );
   }
 }
