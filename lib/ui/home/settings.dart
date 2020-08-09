@@ -6,9 +6,9 @@ import '../constant.dart';
 import '../theme.dart';
 
 class Settings extends StatelessWidget {
-  final bool isMobile;
+  final bool isSmall;
 
-  Settings({this.isMobile});
+  Settings({this.isSmall});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class Settings extends StatelessWidget {
     );
   }
 
-  bool get _canNarrow => !isMobile || Get.find<RxBool>().value;
+  bool get _canNarrow => !isSmall || Get.find<RxBool>().value;
 }
 
 class _Localization extends _Toggle<Locale> {

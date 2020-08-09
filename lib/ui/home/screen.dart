@@ -53,7 +53,7 @@ class Screen extends StatelessWidget {
                     ),
                     _Fader(Alignment.topCenter),
                     _Fader(Alignment.bottomCenter),
-                    _Title(),
+                    _Title(info.isSmall),
                     NextPage(),
                   ],
                 );
@@ -77,7 +77,7 @@ class Screen extends StatelessWidget {
   static List<Widget> _buildSettings(BoxConstraints info) {
     return _adapted(
       About(),
-      Settings(isMobile: info.isSmall),
+      Settings(isSmall: info.isSmall),
       info,
       before: SizedBox(height: _Title.height),
     );
@@ -89,7 +89,7 @@ class Screen extends StatelessWidget {
       Pic(),
       info,
       before: SizedBox(height: _Title.height),
-      append: Footer(isMobile: info.isSmall),
+      append: Footer(isSmall: info.isSmall),
     );
   }
 
@@ -142,19 +142,21 @@ class _Fader extends StatelessWidget {
 class _Title extends StatelessWidget {
   static const double height = kFooterHeight;
 
+  final isSmall;
   final scrolling = Get.find<Scrolling>();
   final pages = Get.find<Map<String, dynamic>>();
+
+  _Title(this.isSmall);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: kPadding * 2),
       child: Obx(() {
-        var narrowed = Get.find<RxBool>().value;
         return Align(
           alignment: Alignment.topCenter,
           child: AnimatedText(
-            index: (scrolling.page.value / (narrowed ? 2 : 1)).floor(),
+            index: (scrolling.page.value / (isSmall ? 2 : 1)).floor(),
             items: pages.keys.toList(),
           ),
         );
