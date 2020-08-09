@@ -8,7 +8,7 @@ import '../common.dart';
 import '../constant.dart';
 
 class Footer extends StatelessWidget {
-  final isMobile;
+  final isSmall;
   final children = [
     SizedBox(
       height: Get.theme.buttonTheme.height,
@@ -58,11 +58,11 @@ class Footer extends StatelessWidget {
     );
   }
 
-  Footer({this.isMobile});
+  Footer({this.isSmall});
 
   @override
   Widget build(BuildContext context) {
-    if (isMobile) {
+    if (isSmall) {
       return Column(children: children);
     } else {
       return SizedBox(
