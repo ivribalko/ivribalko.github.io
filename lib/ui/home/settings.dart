@@ -33,7 +33,7 @@ class _Localization extends _Toggle<Locale> {
   List<Locale> getValues() => locales;
 
   @override
-  bool isCurrent(Locale value) => value == Get.locale;
+  bool isCurrent(Locale value) => value.languageCode == Get.locale.languageCode;
 
   @override
   Widget toWidget(Locale value) {
