@@ -8,11 +8,10 @@ import 'l10n.dart';
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Get.updateLocale(Localizations.localeOf(Get.context));
-    });
     return GetMaterialApp(
       title: 'Ivan Rybalko - Flutter developer in NY',
+      locale: Get.deviceLocale,
+      fallbackLocale: Locale('en', 'US'),
       translationsKeys: translationsKeys,
       theme: themes[ThemeMode.light],
       darkTheme: themes[ThemeMode.dark],
