@@ -12,7 +12,7 @@ class NextPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(
       () {
-        var isFooter = scrolling.isFooter.value;
+        var isFooter = scrolling.isFooter.value!;
         return IgnorePointer(
           ignoring: isFooter ? true : false,
           child: AnimatedOpacity(
@@ -35,7 +35,7 @@ class NextPage extends StatelessWidget {
                       child: IconButton(
                         icon: Icon(Icons.arrow_downward),
                         onPressed: () => scroll.animateToPage(
-                          scroll.page.toInt() + 1,
+                          scroll.page!.toInt() + 1,
                           duration: kDuration,
                           curve: Curves.easeOutQuad,
                         ),
@@ -52,12 +52,12 @@ class NextPage extends StatelessWidget {
   }
 
   BoxDecoration _buildBoxDecoration() {
-    var isHeader = scrolling.isHeader.value;
+    var isHeader = scrolling.isHeader.value!;
     var isFooter = scrolling.isFooter.value;
-    var hiding = isHeader || isFooter;
+    var hiding = isHeader || isFooter!;
     return BoxDecoration(
       border: Border.all(
-        color: hiding ? Colors.transparent : Get.theme.accentColor,
+        color: hiding ? Colors.transparent : Get.theme!.accentColor,
         width: 2,
       ),
       borderRadius: BorderRadius.all(
