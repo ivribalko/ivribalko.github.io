@@ -5,7 +5,7 @@ import 'package:flutter/rendering.dart';
 
 class StackWithAllChildrenReceiveEvents extends Stack {
   StackWithAllChildrenReceiveEvents({
-    Key key,
+    Key? key,
     AlignmentDirectional alignment = AlignmentDirectional.topStart,
     TextDirection textDirection = TextDirection.ltr,
     StackFit fit = StackFit.loose,
@@ -54,9 +54,9 @@ class StackWithAllChildrenReceiveEvents extends Stack {
 
 class RenderStackWithAllChildrenReceiveEvents extends RenderStack {
   RenderStackWithAllChildrenReceiveEvents({
-    List<RenderBox> children,
+    List<RenderBox>? children,
     AlignmentGeometry alignment = AlignmentDirectional.topStart,
-    TextDirection textDirection,
+    TextDirection? textDirection,
     StackFit fit = StackFit.loose,
     Overflow overflow = Overflow.clip,
   }) : super(
@@ -65,19 +65,19 @@ class RenderStackWithAllChildrenReceiveEvents extends RenderStack {
           fit: fit,
         );
 
-  bool allCdefaultHitTestChildren(HitTestResult result, {Offset position}) {
+  bool allCdefaultHitTestChildren(HitTestResult result, {Offset? position}) {
     // the x, y parameters have the top left of the node's box as the origin
     var child = lastChild;
     while (child != null) {
-      final StackParentData childParentData = child.parentData;
-      child.hitTest(result, position: position - childParentData.offset);
+      final StackParentData childParentData = child.parentData as StackParentData;
+      child.hitTest(result as BoxHitTestResult, position: position! - childParentData.offset);
       child = childParentData.previousSibling;
     }
     return false;
   }
 
   @override
-  bool hitTestChildren(HitTestResult result, {Offset position}) {
+  bool hitTestChildren(HitTestResult result, {Offset? position}) {
     return allCdefaultHitTestChildren(result, position: position);
   }
 }

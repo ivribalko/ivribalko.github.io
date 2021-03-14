@@ -8,30 +8,30 @@ class Scrolling extends GetxController {
   final offset = 0.0.obs;
   final isHeader = true.obs;
   final isFooter = false.obs;
-  final PageController scroll;
+  final PageController? scroll;
 
   Scrolling(this.scroll) {
-    scroll.addListener(_update);
+    scroll!.addListener(_update);
   }
 
   @override
   void onClose() {
-    scroll.removeListener(_update);
+    scroll!.removeListener(_update);
     super.onClose();
   }
 
   void forceUpdate() {
-    offset.value -= 1;
-    offset.value += 1;
+    offset.value = offset.value! - 1;
+    offset.value = offset.value! + 1;
     _update();
   }
 
   void _update() {
     const diff = kFooterHeight + 50;
-    page.value = scroll.page.round();
-    offset.value = scroll.offset;
-    isHeader.value = scroll.offset < diff;
-    isFooter.value = scroll.position.maxScrollExtent - scroll.offset < diff;
+    page.value = scroll!.page!.round();
+    offset.value = scroll!.offset;
+    isHeader.value = scroll!.offset < diff;
+    isFooter.value = scroll!.position.maxScrollExtent - scroll!.offset < diff;
     update();
   }
 }

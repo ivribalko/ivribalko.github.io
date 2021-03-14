@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import '../constant.dart';
 
 class AnimatedText extends StatefulWidget {
-  final int index;
-  final List<String> items;
+  final int? index;
+  final List<String>? items;
 
   const AnimatedText({
     this.index,
@@ -19,7 +19,7 @@ class AnimatedText extends StatefulWidget {
 
 class _AnimatedTextState extends State<AnimatedText>
     with SingleTickerProviderStateMixin {
-  AnimationController animation;
+  late AnimationController animation;
 
   _AnimatedTextState() {
     animation = AnimationController(
@@ -42,9 +42,9 @@ class _AnimatedTextState extends State<AnimatedText>
         );
       },
       child: Text(
-        widget.items[widget.index],
+        widget.items![widget.index!],
         key: ValueKey(widget.index),
-        style: Get.textTheme.headline4,
+        style: Get.textTheme!.headline4,
       ),
     );
   }

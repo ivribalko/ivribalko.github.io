@@ -10,8 +10,8 @@ class FAB extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      var isHeader = scrolling.isHeader.value;
-      var isFooter = scrolling.isFooter.value;
+      var isHeader = scrolling.isHeader.value!;
+      var isFooter = scrolling.isFooter.value!;
       return IgnorePointer(
         ignoring: isFooter,
         child: AnimatedOpacity(
