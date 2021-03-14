@@ -6,7 +6,7 @@ import '../constant.dart';
 import '../theme.dart';
 
 class Settings extends StatelessWidget {
-  final bool isSmall;
+  final bool? isSmall;
 
   Settings({this.isSmall});
 
@@ -25,7 +25,7 @@ class Settings extends StatelessWidget {
     );
   }
 
-  bool get _canNarrow => !isSmall || Get.find<RxBool>().value;
+  bool get _canNarrow => !isSmall! || Get.find<RxBool>().value!;
 }
 
 class _Localization extends _Toggle<Locale> {
@@ -33,7 +33,7 @@ class _Localization extends _Toggle<Locale> {
   List<Locale> getValues() => locales;
 
   @override
-  bool isCurrent(Locale value) => value.languageCode == Get.locale.languageCode;
+  bool isCurrent(Locale value) => value.languageCode == Get.locale!.languageCode;
 
   @override
   Widget toWidget(Locale value) {
@@ -74,10 +74,10 @@ class _Theming extends _Toggle<ThemeMode> {
     return Future.delayed(
       Duration(milliseconds: 100),
       () {
-        Get.updateLocale(Get.locale);
+        Get.updateLocale(Get.locale!);
         Future.delayed(
           Duration(milliseconds: 100),
-          () => Get.updateLocale(Get.locale),
+          () => Get.updateLocale(Get.locale!),
         );
       },
     );
@@ -125,7 +125,7 @@ abstract class _Toggle<T> extends StatelessWidget {
   @protected
   Widget toWidget(T value);
 
-  TextStyle styleFor(T value) {
-    return isCurrent(value) ? TextStyle(color: Get.theme.accentColor) : null;
+  TextStyle? styleFor(T value) {
+    return isCurrent(value) ? TextStyle(color: Get.theme!.accentColor) : null;
   }
 }

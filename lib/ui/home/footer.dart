@@ -10,12 +10,12 @@ class Footer extends StatelessWidget {
   final isSmall;
   final children = [
     SizedBox(
-      height: Get.theme.buttonTheme.height,
+      height: Get.theme!.buttonTheme.height,
       child: Center(child: Text('© ${'ivan_rybalko'.tr}, 2020')),
     ),
     Obx(
       () {
-        var isFooter = Get.find<Scrolling>().isFooter.value;
+        var isFooter = Get.find<Scrolling>().isFooter.value!;
         return Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -76,14 +76,14 @@ class Footer extends StatelessWidget {
 }
 
 class _FooterButton extends StatelessWidget {
-  final int index;
-  final IconData icon;
-  final String address;
+  final int? index;
+  final IconData? icon;
+  final String? address;
   final RxBool entered = false.obs;
   static const double size = kFooterHeight;
 
   _FooterButton({
-    Key key,
+    Key? key,
     this.index,
     this.icon,
     this.address,
@@ -99,7 +99,7 @@ class _FooterButton extends StatelessWidget {
         height: size,
         child: IconButton(
           icon: Icon(icon),
-          onPressed: () => launch(address),
+          onPressed: () => launch(address!),
         ),
       ),
     );

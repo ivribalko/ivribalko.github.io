@@ -25,7 +25,7 @@ class Screen extends StatelessWidget {
 
   Screen() {
     Get.put(Scrolling(scroll));
-    ever(narrowed, _update);
+    ever(narrowed!, _update);
   }
 
   @override
@@ -35,7 +35,7 @@ class Screen extends StatelessWidget {
       body: Obx(() {
         return Center(
           child: SizedBox(
-            width: narrowed.value ? mobileWidth - 200 : double.infinity,
+            width: narrowed!.value! ? mobileWidth - 200 : double.infinity,
             child: LayoutBuilder(
               builder: (context, info) {
                 return StackWithAllChildrenReceiveEvents(
@@ -45,7 +45,7 @@ class Screen extends StatelessWidget {
                       controller: scroll,
                       pageSnapping: false,
                       children: [
-                        ...pages.values.map((e) => e.call(info)).fold(
+                        ...pages!.values.map((e) => e.call(info)).fold(
                           [],
                           (result, element) => result.followedBy(element),
                         ),
@@ -95,12 +95,12 @@ class Screen extends StatelessWidget {
 
   dynamic _update(dynamic narrowed) {
     if (narrowed) {
-      scroll.jumpToPage(scroll.page.round() * 2 + 1);
+      scroll!.jumpToPage(scroll!.page!.round() * 2 + 1);
     } else {
-      scroll.jumpToPage((scroll.page / 2).floor());
+      scroll!.jumpToPage((scroll!.page! / 2).floor());
     }
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       Get.find<Scrolling>().forceUpdate(); // update next page visible
     });
   }
@@ -115,7 +115,7 @@ class _Fader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      var isMiddle = !scrolling.isHeader.value && !scrolling.isFooter.value;
+      var isMiddle = !scrolling.isHeader.value! && !scrolling.isFooter.value!;
       return Align(
         alignment: alignment,
         child: AnimatedContainer(
@@ -128,8 +128,8 @@ class _Fader extends StatelessWidget {
               begin: alignment,
               end: Alignment(-1 * alignment.x, -1 * alignment.y),
               colors: [
-                Get.theme.scaffoldBackgroundColor,
-                Get.theme.scaffoldBackgroundColor.withOpacity(0),
+                Get.theme!.scaffoldBackgroundColor,
+                Get.theme!.scaffoldBackgroundColor.withOpacity(0),
               ],
             ),
           ),
@@ -169,8 +169,8 @@ List<Widget> _responsive(
   Widget one,
   Widget two,
   BoxConstraints info, {
-  Widget before,
-  Widget append,
+  Widget? before,
+  Widget? append,
 }) {
   if (info.isSmall) {
     return [
