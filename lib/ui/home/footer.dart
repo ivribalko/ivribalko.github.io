@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -98,44 +97,11 @@ class _FooterButton extends StatelessWidget {
       child: SizedBox(
         width: size,
         height: size,
-        child: Stack(
-          children: [
-            Center(child: _HoverBack(entered)),
-            Center(
-              child: IconButton(
-                icon: Icon(icon),
-                hoverColor: Colors.transparent,
-                onPressed: () => launch(address),
-              ),
-            ),
-          ],
+        child: IconButton(
+          icon: Icon(icon),
+          onPressed: () => launch(address),
         ),
       ),
-    );
-  }
-}
-
-class _HoverBack extends StatelessWidget {
-  final RxBool entered;
-
-  const _HoverBack(this.entered);
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(
-      () {
-        var value = entered.value;
-        return ClipPath(
-          clipper: StarClipper(8),
-          child: AnimatedContainer(
-            height: value ? _FooterButton.size : 0,
-            width: value ? _FooterButton.size : 0,
-            color: Get.theme.accentColor,
-            duration: kDuration,
-            curve: kCurve,
-          ),
-        );
-      },
     );
   }
 }
