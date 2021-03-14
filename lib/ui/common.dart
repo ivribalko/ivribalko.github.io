@@ -21,8 +21,8 @@ class Scrolling extends GetxController {
   }
 
   void forceUpdate() {
-    offset.value -= 1;
-    offset.value += 1;
+    offset.value = offset.value! - 1;
+    offset.value = offset.value! + 1;
     _update();
   }
 
