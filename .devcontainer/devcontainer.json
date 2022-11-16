@@ -1,0 +1,20 @@
+{
+	"image" : "mcr.microsoft.com/devcontainers/universal:linux",
+	"onCreateCommand": "sudo git clone https://github.com/flutter/flutter.git -b 2.0.0 $FLUTTER_PATH && sudo chown -R $USER $FLUTTER_PATH",
+	"containerEnv": {
+		"FLUTTER_PATH": "/usr/local/lib/flutter"
+	},
+	"remoteEnv": {
+		"PATH": "${containerEnv:PATH}:${containerEnv:FLUTTER_PATH}/bin"
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"eamodio.gitlens",
+				"Dart-Code.flutter",
+				"Dart-Code.dart-code",
+				"streetsidesoftware.code-spell-checker"
+			]
+		}
+	}
+}
