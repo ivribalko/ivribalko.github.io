@@ -11,7 +11,7 @@ class Footer extends StatelessWidget {
   final children = [
     SizedBox(
       height: Get.theme!.buttonTheme.height,
-      child: Center(child: Text('© ${'ivan_rybalko'.tr}, 2020')),
+      child: Center(child: Text('© ${'ivan_rybalko'.tr}, 2023')),
     ),
     Obx(
       () {
@@ -28,13 +28,13 @@ class Footer extends StatelessWidget {
             _FooterButton(
               index: 1,
               icon: MdiIcons.telegram,
-              address: 'https://t.me/whitepyjamas',
+              address: 'https://t.me/ivribalko',
             ),
             _animatedPadding(isFooter),
             _FooterButton(
               index: 2,
               icon: MdiIcons.github,
-              address: 'https://github.com/whitepyjamas',
+              address: 'https://github.com/ivribalko',
             ),
           ],
         );
