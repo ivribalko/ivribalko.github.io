@@ -9,3 +9,4 @@ git add *
 git commit -am "deploy"
 git push
 # GitHub Actions deploys website after that
+# https://github.com/ivribalko/ivribalko.github.io/actions
