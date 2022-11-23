@@ -1,8 +1,10 @@
 flutter pub get
 flutter build web
-mkdir -p docs
+mv docs/CNAME CNAME
+rm -rf docs
 # docs is set as source folder for GitHub Pages in repository's Settings
-cp -avr build/web/* docs/
+mv build/web docs
+mv CNAME docs/CNAME
 git add *
 git commit -am "deploy"
 git push
